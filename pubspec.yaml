@@ -1,0 +1,109 @@
+name: e_price
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.1 <4.0.0'
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  path_provider: ^2.1.3
+  provider: ^6.1.2
+  intl: ^0.19.0
+  hive: ^2.2.3
+  get_it: ^7.7.0
+  cloud_firestore: ^5.1.0
+  firebase_auth: ^5.1.2
+  firebase_storage: ^12.1.1
+  google_sign_in: ^6.2.1
+  firebase_messaging: ^15.0.3
+  shimmer: ^3.0.0
+  flutter_local_notifications: ^17.2.1+2
+  http: ^1.2.2
+  googleapis_auth: ^1.6.0
+  firebase_core: ^3.2.0
+  image_picker: ^1.1.2
+  cached_network_image: ^3.3.1
+  flutter_barcode_scanner: ^2.0.0
+  excel: ^4.0.3
+  file_picker: ^8.0.6
+  hardware_buttons_find_flutter: ^0.0.4
+  barcode_widget: ^2.0.4
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/
+    - assets/images/
+    - assets/icons/
+    - assets/fonts/
+    - assets/gif/
+    - assets/e-price-13564-5c0a4f0ec8a7.json
+
+  #   - images/a_dot_ham.jpeg
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  fonts:
+    - family: MonB
+      fonts:
+        - asset: assets/fonts/Montserrat-Bold.ttf
+    - family: MonM
+      fonts:
+        - asset: assets/fonts/Montserrat-Medium.ttf
+    - family: MonR
+      fonts:
+        - asset: assets/fonts/Montserrat-Regular.ttf
+    - family: PB
+      fonts:
+        - asset: assets/fonts/PetrovSans-Bold.ttf
+    - family: PEB
+      fonts:
+        - asset: assets/fonts/PetrovSans-ExtraBold.ttf
+    - family: PR
+      fonts:
+        - asset: assets/fonts/PetrovSans-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
