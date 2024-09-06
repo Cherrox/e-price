@@ -1,20 +1,23 @@
 package e.price.gs
 
-import android.bld.PrintManager
+import android.content.Context
+import android.print.PrintManager
+import android.print.PrintDocumentAdapter
+import android.print.PrintAttributes
+import androidx.core.content.ContextCompat
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
-    private var printManager: PrintManager? = null
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
             .setMethodCallHandler { call: MethodCall, result: MethodChannel.Result ->
                 if (call.method == "printText") {
                     val content = call.argument<String>("content")
-                    if (printText(content)) {
+                    if (content != null && printText(content)) {
                         result.success("Printed Successfully")
                     } else {
                         result.error("UNAVAILABLE", "Printing failed.", null)
@@ -25,15 +28,17 @@ class MainActivity : FlutterActivity() {
             }
     }
 
-    private fun printText(content: String?): Boolean {
+    private fun printText(content: String): Boolean {
         return try {
-            if (printManager == null) {
-                printManager = PrintManager.getDefaultInstance(this)
-                printManager?.open()
-            }
-            printManager!!.addText(0, 3, false, false, content)
-            printManager!!.start()
-            true
+            val printManager = getSystemService(Context.PRINT_SERVICE) as PrintManager
+            val printAdapter = TextPrintAdapter(content)
+
+            val printJob = printManager.print(
+                "PrintJob",
+                printAdapter,
+                PrintAttributes.Builder().build()
+            )
+            printJob.isCompleted
         } catch (e: Exception) {
             e.printStackTrace()
             false

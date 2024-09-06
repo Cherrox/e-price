@@ -1,6 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api
-
-import 'package:e_price/src/api/pda_print.dart';
+import 'package:e_price/src/services/print_service.dart';
 import 'package:flutter/material.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:e_price/src/screen.dart';

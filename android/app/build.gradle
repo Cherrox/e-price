@@ -47,7 +47,7 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdk = 23
         targetSdk = 34
-        versionCode = 5
+        versionCode = 6
         versionName = "1.0.0"
     }
 
@@ -71,12 +71,15 @@ repositories {
 }
 
 dependencies {
-    implementation(name: 'lcprintsdk1.1-release', ext: 'aar')
-    //implementation fileTree(dir: 'libs', include: ['*.aar'])
+    implementation(name: 'lcprintsdk1.0.13-release', ext: 'aar')
+    //implementation fileTree(includes: ['*.aar', '*.jar'], dir: 'libs')
     implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     implementation platform('com.google.firebase:firebase-bom:33.1.1')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging'
