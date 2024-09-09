@@ -7,7 +7,7 @@ class PrinterService {
     try {
       await _channel.invokeMethod('printText', {'content': content});
     } on PlatformException catch (e) {
-      print("Failed to print: '${e.message}'.");
+      print("FALLO LA IMPRESORA: '${e.message}'.");
     }
   }
 }
