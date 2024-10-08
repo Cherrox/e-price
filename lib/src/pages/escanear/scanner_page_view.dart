@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hardware_buttons_find_flutter/hardware_buttons_find_flutter_method_channel.dart' as HardwareButtons;
+import 'package:hardware_buttons_find_flutter/hardware_buttons_find_flutter_method_channel.dart'
+    as HardwareButtons;
 import 'package:e_price/src/pages/escanear/edit_scanner.dart';
 import 'package:e_price/src/pages/productos/add_product_page.dart';
 import 'package:e_price/src/widgets/button_decoration_widget.dart';
@@ -58,7 +59,8 @@ class _ScannerPageViewState extends State<ScannerPageView> {
             final modifiedData = await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => EditScannedDataPage(productData: doc.data(), docId: doc.id),
+                builder: (context) =>
+                    EditScannedDataPage(productData: doc.data(), docId: doc.id),
               ),
             );
 
@@ -66,7 +68,8 @@ class _ScannerPageViewState extends State<ScannerPageView> {
               setState(() {});
             }
           } else {
-            showSnackbar(context, 'Usted no es el propietario de estos productos');
+            showSnackbar(
+                context, 'Usted no es el propietario de estos productos');
           }
         } else {
           showSnackbar(context, 'El producto no existe o fue eliminado');
@@ -93,12 +96,14 @@ class _ScannerPageViewState extends State<ScannerPageView> {
           ),
           const SizedBox(height: 20),
           ButtonDecorationWidget(
-            icon2: const Icon(Icons.shopping_bag_rounded, color: AppColors.pink, size: 35),
+            icon2: const Icon(Icons.shopping_bag_rounded,
+                color: AppColors.pink, size: 35),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddProductPage(userData: widget.userDatos),
+                  builder: (context) =>
+                      AddProductPage(userData: widget.userDatos),
                 ),
               );
             },
@@ -111,7 +116,8 @@ class _ScannerPageViewState extends State<ScannerPageView> {
             child: Center(
               child: Text(
                 "Presiona el botón para escanear\nel código de barras",
-                style: TextStyle(fontSize: 15, fontFamily: "PR", color: AppColors.orange),
+                style: TextStyle(
+                    fontSize: 15, fontFamily: "PR", color: AppColors.orange),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -140,7 +146,7 @@ class _ScannerPageViewState extends State<ScannerPageView> {
   }
 
   TextStyle estiloDeTexto(double? fontSize) {
-    return TextStyle(fontSize: fontSize, fontFamily: "MonB", color: AppColors.black);
+    return TextStyle(
+        fontSize: fontSize, fontFamily: "MonB", color: AppColors.black);
   }
-
 }

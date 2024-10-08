@@ -41,20 +41,24 @@ class ButtomDecorationWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
                 child: Image.asset(
                   icon,
                   height: 30,
                   color: iconColor,
                 ),
               ),
-              const SizedBox(width: 10),
-              Text(
-                textIcon,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 15.0,
-                  fontFamily: "MonB",
+              // const SizedBox(width: 10),
+              FittedBox(
+                child: Text(
+                  textIcon,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: 15.0,
+                    fontFamily: "MonB",
+                  ),
                 ),
               ),
             ],

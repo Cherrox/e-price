@@ -159,93 +159,100 @@ class AuthProviderP extends ChangeNotifier {
 
   //REGISTRAR USUARIO
   Future<User?> registerWithGoogle(BuildContext context, String? token) async {
-    isLoginGoogle = true;
-    notifyListeners();
-    //cerrar teclado
-    FocusScope.of(context).unfocus();
+    try {
+      isLoginGoogle = true;
+      notifyListeners();
+      //cerrar teclado
+      FocusScope.of(context).unfocus();
 
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    if (googleUser == null) {
+      if (googleUser == null) {
+        isLoginGoogle = false;
+        notifyListeners();
+        return null;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential authResult =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      final User? user = authResult.user;
+
+      if (user != null) {
+        // Obtener la fecha y hora actual
+        DateTime now = DateTime.now();
+
+        //obtener la referencia a la coleccion de usuarios
+        final userRef = FirebaseFirestore.instance.collection('users');
+
+        //guardar datos
+        final userData = {
+          'id': user.uid,
+          'username': googleUser.displayName,
+          'username_lowercase':
+              googleUser.displayName!.toLowerCase().replaceAll(' ', ''),
+          'email': googleUser.email.toLowerCase(),
+          'password': '',
+          'birth': '',
+          'nameAndApellido': '',
+          'sexo': "",
+          'direccion': "",
+          'imageUser': googleUser.photoUrl!,
+          'telefono': "",
+          'biografia': "Soy ${googleUser.displayName}",
+          'createdAt': now,
+          'edad': '',
+          'token': token,
+          'estado': 'offline',
+          'premium': false,
+          'aprobado': false,
+          'verificado': false,
+          'service': false,
+          'proveedor': false,
+          'favoritos': 0,
+          'compartidos': 0,
+          'seguidos': 0,
+          'seguidores': 0,
+          'favoritosJson': [],
+          'compartidosJson': [],
+          'seguidosJson': [],
+          'seguidoresJson': [],
+          'rol': 'user',
+        };
+
+        // Aquí puedes guardar los datos del usuario en Firestore
+        await userRef.doc(user.uid).set(userData);
+
+        // Cambiar el estado de la autenticación
+        checkAuthStatus();
+        //navegar a la página de inicio
+        // Navegar a la página de inicio
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => InicioScreen(
+                userData: userData,
+              ),
+            ));
+        //fin de proceso
+        isLoginGoogle = false;
+        notifyListeners();
+      }
+
+      return user;
+    } catch (error) {
       isLoginGoogle = false;
       notifyListeners();
+      showSnackbar(context, "Error registrando con google: $error");
       return null;
     }
-
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    final UserCredential authResult =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-    final User? user = authResult.user;
-
-    if (user != null) {
-      // Obtener la fecha y hora actual
-      DateTime now = DateTime.now();
-
-      //obtener la referencia a la coleccion de usuarios
-      final userRef = FirebaseFirestore.instance.collection('users');
-
-      //guardar datos
-      final userData = {
-        'id': user.uid,
-        'username': googleUser.displayName,
-        'username_lowercase':
-            googleUser.displayName!.toLowerCase().replaceAll(' ', ''),
-        'email': googleUser.email.toLowerCase(),
-        'password': '',
-        'birth': '',
-        'nameAndApellido': '',
-        'sexo': "",
-        'direccion': "",
-        'imageUser': googleUser.photoUrl!,
-        'telefono': "",
-        'biografia': "Soy ${googleUser.displayName}",
-        'createdAt': now,
-        'edad': '',
-        'token': token,
-        'estado': 'offline',
-        'premium': false,
-        'aprobado': false,
-        'verificado': false,
-        'service': false,
-        'proveedor': false,
-        'favoritos': 0,
-        'compartidos': 0,
-        'seguidos': 0,
-        'seguidores': 0,
-        'favoritosJson': [],
-        'compartidosJson': [],
-        'seguidosJson': [],
-        'seguidoresJson': [],
-        'rol': 'user',
-      };
-
-      // Aquí puedes guardar los datos del usuario en Firestore
-      await userRef.doc(user.uid).set(userData);
-
-      // Cambiar el estado de la autenticación
-      checkAuthStatus();
-      //navegar a la página de inicio
-      // Navegar a la página de inicio
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => InicioScreen(
-              userData: userData,
-            ),
-          ));
-      //fin de proceso
-      isLoginGoogle = false;
-      notifyListeners();
-    }
-
-    return user;
   }
 
   //PARA OBTENER LOS DATOS DEL USUARIO
