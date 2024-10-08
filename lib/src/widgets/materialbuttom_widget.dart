@@ -8,16 +8,17 @@ class MaterialButtomWidget extends StatelessWidget {
   final EdgeInsets margin;
   final double? height;
   final double? fontSize;
+  final IconData? icon;
 
-  const MaterialButtomWidget({
-    super.key,
-    required this.title,
-    required this.color,
-    required this.onPressed,
-    this.margin = const EdgeInsets.symmetric(horizontal: 20),
-    this.height = 50,
-    this.fontSize = 18,
-  });
+  const MaterialButtomWidget(
+      {super.key,
+      required this.title,
+      required this.color,
+      required this.onPressed,
+      this.margin = const EdgeInsets.symmetric(horizontal: 20),
+      this.height = 50,
+      this.fontSize = 18,
+      this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +39,35 @@ class MaterialButtomWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(100),
           ),
           onPressed: onPressed,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              title,
-              style: TextStyle(
-                color: AppColors.white,
-                fontSize: fontSize,
-                fontFamily: "MonB",
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (icon != null)
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
+                  child: Icon(
+                    icon,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    size: icon == Icons.onetwothree
+                        ? (fontSize ?? 25) + 20.00
+                        : (fontSize ?? 25) + 10.00,
+                  ),
+                ),
+              // const SizedBox(
+              //   width: 5,
+              // ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: AppColors.white,
+                    fontSize: fontSize,
+                    fontFamily: "MonB",
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),

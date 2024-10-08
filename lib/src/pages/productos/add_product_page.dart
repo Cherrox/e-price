@@ -42,7 +42,8 @@ class _AddProductPageState extends State<AddProductPage> {
 
       // Calcular el total de filas a procesar
       for (var table in excel.tables.keys) {
-        totalRows += excel.tables[table]!.rows.length - 1; // -1 para excluir la fila de encabezado
+        totalRows += excel.tables[table]!.rows.length -
+            1; // -1 para excluir la fila de encabezado
       }
 
       for (var table in excel.tables.keys) {
@@ -84,7 +85,8 @@ class _AddProductPageState extends State<AddProductPage> {
               await refCollection.doc(docId).update(productData);
             } else {
               // Usuario no es propietario
-              showSnackbar(context, 'Usted no es el propietario de estos productos');
+              showSnackbar(
+                  context, 'Usted no es el propietario de estos productos');
             }
           } else {
             // Producto no existe, agregar uno nuevo
@@ -112,7 +114,8 @@ class _AddProductPageState extends State<AddProductPage> {
   }
 
   Future<void> _pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['xlsx']);
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['xlsx']);
     if (result != null) {
       String filePath = result.files.single.path!;
       await _uploadExcelData(filePath);
@@ -128,36 +131,56 @@ class _AddProductPageState extends State<AddProductPage> {
         backgroundColor: AppColors.pink,
         centerTitle: true,
         iconTheme: const IconThemeData(color: AppColors.white),
-        title: const Text('Agregar Productos', style: TextStyle(color: AppColors.white, fontWeight: FontWeight.bold)),
+        title: const Text('Agregar Productos',
+            style:
+                TextStyle(color: AppColors.white, fontWeight: FontWeight.bold)),
       ),
-      body: Center(
-        child: isLoading
-            ? StreamBuilder<int>(
-                stream: _progressController.stream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const CircularProgressWidget(
-                          text: "Cargando\nPor favor espere....",
-                          color: AppColors.orange,
-                        ),
-                        const SizedBox(height: 20),
-                        Text('${snapshot.data}%', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      ],
-                    );
-                  } else {
-                    return const CircularProgressWidget(text: "Cargando\nPor favor espere....", color: AppColors.orange);
-                  }
-                },
-              )
-            : MaterialButtomWidget(
+      body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              isLoading
+                  ? StreamBuilder<int>(
+                      stream: _progressController.stream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const CircularProgressWidget(
+                                text: "Cargando\nPor favor espere....",
+                                color: AppColors.orange,
+                              ),
+                              const SizedBox(height: 20),
+                              Text('${snapshot.data}%',
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          );
+                        } else {
+                          return const CircularProgressWidget(
+                              text: "Cargando\nPor favor espere....",
+                              color: AppColors.orange);
+                        }
+                      },
+                    )
+                  : MaterialButtomWidget(
+                      color: AppColors.orange,
+                      icon: Icons.onetwothree,
+                      onPressed: _pickFile,
+                      title: 'Subir productos',
+                    ),
+              const SizedBox(height: 20),
+              MaterialButtomWidget(
                 color: AppColors.orange,
+                icon: Icons.plus_one,
                 onPressed: _pickFile,
-                title: 'Subir productos',
+                title: 'Subir producto',
               ),
-      ),
+            ],
+          )),
     );
   }
 }
