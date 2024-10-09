@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'dart:async';
+import 'package:e_price/src/pages/productos/add_one_product_page%20copy.dart';
 import 'package:e_price/src/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:excel/excel.dart';
@@ -176,7 +177,15 @@ class _AddProductPageState extends State<AddProductPage> {
               MaterialButtomWidget(
                 color: AppColors.orange,
                 icon: Icons.plus_one,
-                onPressed: _pickFile,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => AddOneProductPage(
+                        userData: widget.userData,
+                      ),
+                    ),
+                  );
+                },
                 title: 'Subir producto',
               ),
             ],
