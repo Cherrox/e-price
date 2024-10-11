@@ -33,7 +33,9 @@ dependencies:
   firebase_core: ^3.2.0
   image_picker: ^1.1.2
   cached_network_image: ^3.3.1
-  flutter_barcode_scanner: ^2.0.0
+  # flutter_barcode_scanner: ^2.0.0
+  # barcode_scanner: ^5.1.0
+  simple_barcode_scanner: ^0.1.5
   excel: ^4.0.3
   file_picker: ^8.0.6
   hardware_buttons_find_flutter: ^0.0.4

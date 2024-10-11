@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hardware_buttons_find_flutter/hardware_buttons_find_flutter_method_channel.dart'
     as HardwareButtons;
@@ -11,6 +10,7 @@ import 'package:e_price/src/pages/escanear/edit_scanner.dart';
 import 'package:e_price/src/pages/productos/add_product_page.dart';
 import 'package:e_price/src/widgets/button_decoration_widget.dart';
 import 'package:e_price/src/screen.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class ScannerPageView extends StatefulWidget {
   final dynamic userDatos;
@@ -41,12 +41,21 @@ class _ScannerPageViewState extends State<ScannerPageView> {
 
   Future<void> _scanBarCode() async {
     try {
-      final scanResult = await FlutterBarcodeScanner.scanBarcode(
-        '#FFA500',
-        'Cancelar',
-        true,
-        ScanMode.BARCODE,
-      );
+      // final scanResult = await FlutterBarcodeScanner.scanBarcode(
+      //   '#FFA500',
+      //   'Cancelar',
+      //   true,
+      //   ScanMode.BARCODE,
+      // );
+      var scanResult;
+      var res = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const SimpleBarcodeScannerPage(),
+          ));
+      if (res is String) {
+        scanResult = res;
+      }
       if (scanResult != '-1') {
         final query = await FirebaseFirestore.instance
             .collection('productos')
