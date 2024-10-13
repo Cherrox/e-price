@@ -37,7 +37,8 @@ class _AddProductPageState extends State<AddProductPage> {
       final bytes = await file.readAsBytes();
       var excel = Excel.decodeBytes(bytes);
 
-      final refCollection = FirebaseFirestore.instance.collection('productos');
+      final refCollection = FirebaseFirestore.instance
+          .collection('users/${widget.userData['id']}/productos');
       int totalRows = 0;
       int processedRows = 0;
 
@@ -58,7 +59,7 @@ class _AddProductPageState extends State<AddProductPage> {
             'createdAt': DateTime.now(),
             'CODIGO DEL ARTICULO': productCode,
             'CODIGO DE BARRAS': row[1]?.value?.toString() ?? "",
-            'NUM.SKU': row[2]?.value?.toString() ?? '',
+            'SKU': row[2]?.value?.toString() ?? '',
             'NOMBRE DEL PRODUCTO': row[3]?.value?.toString() ?? '',
             'PRECIO ENTERO': row[4]?.value?.toString() ?? "",
             'PRECIO': row[5]?.value?.toString() ?? "",
@@ -79,16 +80,9 @@ class _AddProductPageState extends State<AddProductPage> {
           if (query.docs.isNotEmpty) {
             // Producto existe, verificar propiedad
             DocumentSnapshot doc = query.docs.first;
-            if (doc['userId'] == widget.userData['id'].toString()) {
-              // Usuario es propietario, actualizar datos, manteniendo 'imageProduct'
-              String docId = doc.id;
-              productData['imageProduct'] = doc['imageProduct'] ?? '';
-              await refCollection.doc(docId).update(productData);
-            } else {
-              // Usuario no es propietario
-              showSnackbar(
-                  context, 'Usted no es el propietario de estos productos');
-            }
+            String docId = doc.id;
+            productData['imageProduct'] = doc['imageProduct'] ?? '';
+            await refCollection.doc(docId).update(productData);
           } else {
             // Producto no existe, agregar uno nuevo
             productData['idDoc'] = refCollection.doc().id;

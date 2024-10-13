@@ -20,16 +20,18 @@ class _ProductosPageState extends State<ProductosPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.pink,
-        title: const Text('Productos', style: TextStyle(color: AppColors.white,fontFamily: "PB")),
+        title: const Text('Productos',
+            style: TextStyle(color: AppColors.white, fontFamily: "PB")),
         actions: [
           IconButton(
             icon: const Icon(Icons.add, color: AppColors.white, size: 30),
             onPressed: () {
-             //agregar datos de los productos
+              //agregar datos de los productos
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddProductPage(userData: widget.userData),
+                  builder: (context) =>
+                      AddProductPage(userData: widget.userData),
                 ),
               );
             },
@@ -38,11 +40,11 @@ class _ProductosPageState extends State<ProductosPage> {
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('productos')
+            .collection('users/${widget.userData['id']}/productos')
             .orderBy('createdAt', descending: true)
-            .where('userId', isEqualTo: widget.userData['id'].toString())
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          print("QuerySnapshot: 'users/${widget.userData['id']}/productos'");
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const ShimerWidget();
           }
@@ -51,7 +53,9 @@ class _ProductosPageState extends State<ProductosPage> {
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('No hay productos disponibles', style: TextStyle(color: AppColors.black)));
+            return const Center(
+                child: Text('No hay productos disponibles',
+                    style: TextStyle(color: AppColors.black)));
           }
 
           final products = snapshot.data!.docs;
@@ -75,59 +79,84 @@ class _ProductosPageState extends State<ProductosPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(data['NOMBRE DEL PRODUCTO'] ?? 'Producto sin nombre',
-                          style: const TextStyle(fontFamily: "PB", fontSize: 18)),
-                      Text('Código de barras: ${data['CODIGO DE BARRAS']}', style: const TextStyle(fontFamily: "PR", fontSize: 14)),
+                          style:
+                              const TextStyle(fontFamily: "PB", fontSize: 18)),
+                      Text('Código de barras: ${data['CODIGO DE BARRAS']}',
+                          style:
+                              const TextStyle(fontFamily: "PR", fontSize: 14)),
                     ],
                   ),
-                  subtitle: Text('Precio: ${data['PRECIO'] ?? 'No disponible'}', style: const TextStyle(fontFamily: "PR", fontSize: 14)),
+                  subtitle: Text('Precio: ${data['PRECIO'] ?? 'No disponible'}',
+                      style: const TextStyle(fontFamily: "PR", fontSize: 14)),
                   onTap: () {
                     // ver los detalles del producto
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProductDetailsPage(productData: data),
+                        builder: (context) => ProductDetailsPage(
+                          productData: data,
+                          userData: widget.userData,
+                        ),
                       ),
                     );
                   },
-                  leading:  image != null 
+                  leading: image != null
                       ? CachedNetworkImage(
-                        height: 60,
-                        width: 60,
-                        fit: BoxFit.cover,
+                          height: 60,
+                          width: 60,
+                          fit: BoxFit.cover,
                           cacheKey: image,
                           imageUrl: image,
                           imageBuilder: (context, imageProvider) => ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image(image: imageProvider, fit: BoxFit.cover, width: 60, height: 60),
+                            child: Image(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                                width: 60,
+                                height: 60),
                           ),
                           placeholder: (context, url) => ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: const Image(image: AssetImage('assets/gif/animc.gif'), fit: BoxFit.cover, width: 60, height: 60),
+                            child: const Image(
+                                image: AssetImage('assets/gif/animc.gif'),
+                                fit: BoxFit.cover,
+                                width: 60,
+                                height: 60),
                           ),
                           errorWidget: (context, url, error) => ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: const Image(image: AssetImage('assets/images/noimage.png'), fit: BoxFit.cover, width: 60, height: 60),
+                            borderRadius: BorderRadius.circular(10),
+                            child: const Image(
+                                image: AssetImage('assets/images/noimage.png'),
+                                fit: BoxFit.cover,
+                                width: 60,
+                                height: 60),
                           ),
-                      )
+                        )
                       : const Padding(
-                        padding: EdgeInsets.all(4.0),
-                        child: IconButton(
-                        icon: Icon(Icons.add_a_photo, color: AppColors.pink, size: 30),
-                        onPressed: null,
-                      ),
-                      ),
-                  trailing: IconButton(onPressed: (){
-                     //navegar a la página de edición pasar los datos del producto seleccionado
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditProductPage(productData: data, docId: product.id),
+                          padding: EdgeInsets.all(4.0),
+                          child: IconButton(
+                            icon: Icon(Icons.add_a_photo,
+                                color: AppColors.pink, size: 30),
+                            onPressed: null,
+                          ),
+                        ),
+                  trailing: IconButton(
+                      onPressed: () {
+                        //navegar a la página de edición pasar los datos del producto seleccionado
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditProductPage(
+                              productData: data,
+                              docId: product.id,
+                              userData: widget.userData,
                             ),
-                          );
-                  }, icon: const Icon(Icons.edit, color: AppColors.pink)),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.edit, color: AppColors.pink)),
                 ),
               );
-              
             },
           );
         },
@@ -135,6 +164,3 @@ class _ProductosPageState extends State<ProductosPage> {
     );
   }
 }
-
-
- 

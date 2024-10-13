@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   final Map<String, dynamic> productData;
-  const ProductDetailsPage({super.key, required this.productData});
+  final dynamic userData;
+  const ProductDetailsPage({
+    super.key,
+    required this.productData,
+    required this.userData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,72 +24,75 @@ class ProductDetailsPage extends StatelessWidget {
             centerTitle: true,
             backgroundColor: AppColors.pink,
             iconTheme: const IconThemeData(color: AppColors.white),
-             flexibleSpace: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              // Cambia el color del texto basado en la posición del scroll
-              final double appBarHeight = constraints.biggest.height;
-              final bool isCollapsed = appBarHeight <= kToolbarHeight + MediaQuery.of(context).padding.top;
-              final Color titleColor = isCollapsed ? AppColors.white : AppColors.black;
-              final double fontSize = isCollapsed ? 17.0 : 14.0;
+            flexibleSpace: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                // Cambia el color del texto basado en la posición del scroll
+                final double appBarHeight = constraints.biggest.height;
+                final bool isCollapsed = appBarHeight <=
+                    kToolbarHeight + MediaQuery.of(context).padding.top;
+                final Color titleColor =
+                    isCollapsed ? AppColors.white : AppColors.black;
+                final double fontSize = isCollapsed ? 17.0 : 14.0;
 
-              return FlexibleSpaceBar(
-                centerTitle: true,
-                title: Text(
-                  productData['NOMBRE DEL PRODUCTO'],
-                  style: TextStyle(color: titleColor, fontSize: fontSize),
-                ),
-                background: productData['imageProduct'] != null
-                    ? InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FullScreen(productData['imageProduct']),
-                          ),
-                        );
-                      },
-                      child: Hero(
-                        tag: productData['imageProduct'],
-                        child: CachedNetworkImage(
-                            imageUrl: productData['imageProduct'],
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => const Image(
-                              image: AssetImage('assets/gif/animc.png'),
+                return FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Text(
+                    productData['NOMBRE DEL PRODUCTO'],
+                    style: TextStyle(color: titleColor, fontSize: fontSize),
+                  ),
+                  background: productData['imageProduct'] != null
+                      ? InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    FullScreen(productData['imageProduct']),
+                              ),
+                            );
+                          },
+                          child: Hero(
+                            tag: productData['imageProduct'],
+                            child: CachedNetworkImage(
+                              imageUrl: productData['imageProduct'],
                               fit: BoxFit.cover,
-                              width: 60,
-                              height: 60,
-                            ),
-                            errorWidget: (context, url, error) => const Image(
-                              image: AssetImage('assets/images/noimage.png'),
-                              fit: BoxFit.cover,
-                              width: 60,
-                              height: 60,
+                              placeholder: (context, url) => const Image(
+                                image: AssetImage('assets/gif/animc.png'),
+                                fit: BoxFit.cover,
+                                width: 60,
+                                height: 60,
+                              ),
+                              errorWidget: (context, url, error) => const Image(
+                                image: AssetImage('assets/images/noimage.png'),
+                                fit: BoxFit.cover,
+                                width: 60,
+                                height: 60,
+                              ),
                             ),
                           ),
-                      ),
-                    )
-                    : const Image(
-                        image: AssetImage('assets/images/noimage.png'),
-                        fit: BoxFit.cover,
-                        width: 60,
-                        height: 60,
-                      ),
-              );
-            },
+                        )
+                      : const Image(
+                          image: AssetImage('assets/images/noimage.png'),
+                          fit: BoxFit.cover,
+                          width: 60,
+                          height: 60,
+                        ),
+                );
+              },
+            ),
           ),
-        ),
           SliverList(
             delegate: SliverChildListDelegate(
               [
                 const SizedBox(height: 20),
-                 //NOMBRE DEL PRODUCTO
+                //NOMBRE DEL PRODUCTO
                 WidgetRichText(
                   text: 'Nombre del producto:  ',
                   text2: productData['NOMBRE DEL PRODUCTO'],
                   text3: '',
                   textAlign: TextAlign.start,
                 ),
-                 //CODIGO DEL ARTICULO
+                //CODIGO DEL ARTICULO
                 WidgetRichText(
                   text: 'Código del artículo:  ',
                   text2: productData['CODIGO DEL ARTICULO'],
@@ -100,7 +108,7 @@ class ProductDetailsPage extends StatelessWidget {
                 //NUM.SKU
                 WidgetRichText(
                   text: 'Num. SKU:  ',
-                  text2: productData['NUM.SKU'],
+                  text2: productData['SKU'],
                   text3: '',
                   textAlign: TextAlign.start,
                 ),
@@ -169,7 +177,7 @@ class ProductDetailsPage extends StatelessWidget {
                 //PROVEEDOR
                 WidgetRichText(
                   text: 'Proveedor:  ',
-                  text2: productData['userName'],
+                  text2: userData['username'],
                   text3: '',
                   textAlign: TextAlign.start,
                 ),

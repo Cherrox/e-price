@@ -55,6 +55,20 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
     _nivelController = TextEditingController();
     _origenController = TextEditingController();
     _especificacionesController = TextEditingController();
+    //Para probar
+    _codigoController = TextEditingController(text: "5555555555");
+    _nombreController = TextEditingController(text: "Producto de prueba");
+    _codeController = TextEditingController(text: "5555555555");
+    _precioController = TextEditingController(text: "900");
+    _precioEnteroController = TextEditingController(text: "900");
+    _precioMiembrosController = TextEditingController(text: "785");
+    _nUMSKUController = TextEditingController(text: "5555555555");
+    _atributoController = TextEditingController(text: "DEFAULT");
+    _listPrecioController = TextEditingController(text: "negocio");
+    _unidadController = TextEditingController(text: "UND");
+    _nivelController = TextEditingController(text: "Premium");
+    _origenController = TextEditingController(text: "Dominicana");
+    _especificacionesController = TextEditingController(text: "Nuevo");
     // imageData = widget.productData['imageProduct'];
   }
 
@@ -76,7 +90,8 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
       // imageNewUrl =
       //     await authProvider.storeFileStorage(refCollection, _image!);
 
-      final refCollection2 = FirebaseFirestore.instance.collection('productos');
+      final refCollection2 = FirebaseFirestore.instance
+          .collection('users/${widget.userData['id']}/productos');
 
       String productCode = _codeController.text;
 
@@ -88,42 +103,36 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
         'PRECIO': _precioController.text,
         'PRECIO ENTERO': _precioEnteroController.text,
         'PRECIO PARA MIEMBROS': _precioMiembrosController.text,
-        'NUM.SKU': _nUMSKUController.text,
+        'SKU': _nUMSKUController.text,
         'ATRIBUTO DE LA PLANTILLA': _atributoController.text,
         'LISTA DE PRECIO': _listPrecioController.text,
         'UNIDAD': _unidadController.text,
         'NIVEL': _nivelController.text,
         'ORIGEN': _origenController.text,
         'ESPECIFICACIONES': _especificacionesController.text,
+        "createdAt": DateTime.now(),
       };
 
       // Verificar si el producto ya existe
       QuerySnapshot query = await refCollection2
           .where('CODIGO DEL ARTICULO', isEqualTo: productCode)
           .get();
-
+      print("Query: ${query.docs}");
       if (query.docs.isNotEmpty) {
-        // Producto existe, verificar propiedad
         DocumentSnapshot doc = query.docs.first;
-        if (doc['userId'] == widget.userData['id'].toString()) {
-          // Usuario es propietario, actualizar datos, manteniendo 'imageProduct'
-          String docId = doc.id;
-          productData['imageProduct'] = doc['imageProduct'] ?? '';
-          await refCollection2.doc(docId).update(productData);
-        } else {
-          // Usuario no es propietario
-          showSnackbar(
-              context, 'Usted no es el propietario de estos productos');
-        }
+        String docId = doc.id;
+        productData['imageProduct'] = doc['imageProduct'] ?? '';
+        await refCollection2.doc(docId).update(productData);
+        showSnackbar(context, 'Producto actualizado correctamente');
       } else {
         // Producto no existe, agregar uno nuevo
         productData['idDoc'] = refCollection2.doc().id;
         productData['imageProduct'] = '';
         await refCollection2.doc(productData['idDoc']).set(productData);
+        showSnackbar(context, 'Producto agregado correctamente');
       }
 
       Navigator.pop(context, true);
-      showSnackbar(context, 'Producto agregado correctamente');
       setState(() {
         _isLoading = false;
       });
@@ -148,7 +157,7 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
             pinned: true,
             centerTitle: true,
             backgroundColor: AppColors.pink,
-            title: const Text('Editar producto',
+            title: const Text('Agregar producto',
                 style: TextStyle(color: AppColors.white, fontFamily: "PB")),
             actions: [
               IconButton(

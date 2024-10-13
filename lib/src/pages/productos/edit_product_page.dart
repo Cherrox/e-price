@@ -13,8 +13,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class EditProductPage extends StatefulWidget {
   final Map<String, dynamic> productData;
+  final dynamic userData;
   final String docId;
-  const EditProductPage({super.key, required this.productData, required this.docId});
+  const EditProductPage({
+    super.key,
+    required this.productData,
+    required this.docId,
+    required this.userData,
+  });
 
   @override
   State<EditProductPage> createState() => _EditProductPageState();
@@ -42,22 +48,32 @@ class _EditProductPageState extends State<EditProductPage> {
   @override
   void initState() {
     super.initState();
-    _codigoController = TextEditingController(text: widget.productData['CODIGO DE BARRAS']);
-    _nombreController = TextEditingController(text: widget.productData['NOMBRE DEL PRODUCTO']);
-    _codeController = TextEditingController(text: widget.productData['CODIGO DEL ARTICULO']);
-    _precioController = TextEditingController(text: widget.productData['PRECIO']);
-    _precioEnteroController = TextEditingController(text: widget.productData['PRECIO ENTERO']);
-    _precioMiembrosController = TextEditingController(text: widget.productData['PRECIO PARA MIEMBROS']);
-    _nUMSKUController = TextEditingController(text: widget.productData['NUM.SKU']);
-    _atributoController = TextEditingController(text: widget.productData['ATRIBUTO DE LA PLANTILLA']);
-    _listPrecioController = TextEditingController(text: widget.productData['LISTA DE PRECIO']);
-    _unidadController = TextEditingController(text: widget.productData['UNIDAD']);
+    _codigoController =
+        TextEditingController(text: widget.productData['CODIGO DE BARRAS']);
+    _nombreController =
+        TextEditingController(text: widget.productData['NOMBRE DEL PRODUCTO']);
+    _codeController =
+        TextEditingController(text: widget.productData['CODIGO DEL ARTICULO']);
+    _precioController =
+        TextEditingController(text: widget.productData['PRECIO']);
+    _precioEnteroController =
+        TextEditingController(text: widget.productData['PRECIO ENTERO']);
+    _precioMiembrosController =
+        TextEditingController(text: widget.productData['PRECIO PARA MIEMBROS']);
+    _nUMSKUController = TextEditingController(text: widget.productData['SKU']);
+    _atributoController = TextEditingController(
+        text: widget.productData['ATRIBUTO DE LA PLANTILLA']);
+    _listPrecioController =
+        TextEditingController(text: widget.productData['LISTA DE PRECIO']);
+    _unidadController =
+        TextEditingController(text: widget.productData['UNIDAD']);
     _nivelController = TextEditingController(text: widget.productData['NIVEL']);
-    _origenController = TextEditingController(text: widget.productData['ORIGEN']);
-    _especificacionesController = TextEditingController(text: widget.productData['ESPECIFICACIONES']);
+    _origenController =
+        TextEditingController(text: widget.productData['ORIGEN']);
+    _especificacionesController =
+        TextEditingController(text: widget.productData['ESPECIFICACIONES']);
     imageData = widget.productData['imageProduct'];
   }
-
 
   bool _hasDataChanged() {
     return _codigoController.text != widget.productData['CODIGO DE BARRAS'] ||
@@ -65,14 +81,17 @@ class _EditProductPageState extends State<EditProductPage> {
         _codeController.text != widget.productData['CODIGO DEL ARTICULO'] ||
         _precioController.text != widget.productData['PRECIO'] ||
         _precioEnteroController.text != widget.productData['PRECIO ENTERO'] ||
-        _precioMiembrosController.text != widget.productData['PRECIO PARA MIEMBROS'] ||
-        _nUMSKUController.text != widget.productData['NUM.SKU'] ||
-        _atributoController.text != widget.productData['ATRIBUTO DE LA PLANTILLA'] ||
+        _precioMiembrosController.text !=
+            widget.productData['PRECIO PARA MIEMBROS'] ||
+        _nUMSKUController.text != widget.productData['SKU'] ||
+        _atributoController.text !=
+            widget.productData['ATRIBUTO DE LA PLANTILLA'] ||
         _listPrecioController.text != widget.productData['LISTA DE PRECIO'] ||
         _unidadController.text != widget.productData['UNIDAD'] ||
         _nivelController.text != widget.productData['NIVEL'] ||
         _origenController.text != widget.productData['ORIGEN'] ||
-        _especificacionesController.text != widget.productData['ESPECIFICACIONES'] ||
+        _especificacionesController.text !=
+            widget.productData['ESPECIFICACIONES'] ||
         _image != null;
   }
 
@@ -106,7 +125,10 @@ class _EditProductPageState extends State<EditProductPage> {
       imageNewUrl = oldImageUrl ?? "";
     }
 
-    await firestore.collection('productos').doc(widget.docId).update({
+    await firestore
+        .collection("users/${widget.userData['id']}/productos")
+        .doc(widget.docId)
+        .update({
       'imageProduct': imageNewUrl,
       'CODIGO DE BARRAS': _codigoController.text,
       'NOMBRE DEL PRODUCTO': _nombreController.text,
@@ -114,7 +136,7 @@ class _EditProductPageState extends State<EditProductPage> {
       'PRECIO': _precioController.text,
       'PRECIO ENTERO': _precioEnteroController.text,
       'PRECIO PARA MIEMBROS': _precioMiembrosController.text,
-      'NUM.SKU': _nUMSKUController.text,
+      'SKU': _nUMSKUController.text,
       'ATRIBUTO DE LA PLANTILLA': _atributoController.text,
       'LISTA DE PRECIO': _listPrecioController.text,
       'UNIDAD': _unidadController.text,
@@ -130,48 +152,49 @@ class _EditProductPageState extends State<EditProductPage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
-           SliverAppBar(
+          SliverAppBar(
             expandedHeight: 350.0,
             pinned: true,
             centerTitle: true,
             backgroundColor: AppColors.pink,
-            title: const Text('Editar producto', style: TextStyle(color: AppColors.white, fontFamily: "PB")),
+            title: const Text('Editar producto',
+                style: TextStyle(color: AppColors.white, fontFamily: "PB")),
             actions: [
               IconButton(
-                icon: const Icon(Icons.add_a_photo, color: AppColors.white, size: 30),
+                icon: const Icon(Icons.add_a_photo,
+                    color: AppColors.white, size: 30),
                 onPressed: () {
-                   showImageSourceDialog(context, (image) {
+                  showImageSourceDialog(context, (image) {
                     setState(() {
                       _image = image;
-                      imageData = null;  // Clear the old image URL
+                      imageData = null; // Clear the old image URL
                     });
                   });
                 },
               ),
             ],
             iconTheme: const IconThemeData(color: AppColors.white),
-             flexibleSpace: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              // Cambia el color del texto basado en la posición del scroll
-              //final double appBarHeight = constraints.biggest.height;
-              //final bool isCollapsed = appBarHeight <= kToolbarHeight + MediaQuery.of(context).padding.top;
-              //final Color titleColor = isCollapsed ? AppColors.white : AppColors.black;
-             // final double fontSize = isCollapsed ? 17.0 : 14.0;
+            flexibleSpace: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                // Cambia el color del texto basado en la posición del scroll
+                //final double appBarHeight = constraints.biggest.height;
+                //final bool isCollapsed = appBarHeight <= kToolbarHeight + MediaQuery.of(context).padding.top;
+                //final Color titleColor = isCollapsed ? AppColors.white : AppColors.black;
+                // final double fontSize = isCollapsed ? 17.0 : 14.0;
 
-              return FlexibleSpaceBar(
-                centerTitle: true,
-                // title: Text(
-                //   widget.productData['NOMBRE DEL PRODUCTO'],
-                //   style: TextStyle(color: titleColor, fontSize: fontSize),
-                // ),
-                background: _image != null
+                return FlexibleSpaceBar(
+                  centerTitle: true,
+                  // title: Text(
+                  //   widget.productData['NOMBRE DEL PRODUCTO'],
+                  //   style: TextStyle(color: titleColor, fontSize: fontSize),
+                  // ),
+                  background: _image != null
                       ? Image.file(
                           _image!,
                           fit: BoxFit.cover,
@@ -184,7 +207,8 @@ class _EditProductPageState extends State<EditProductPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => FullScreen(imageData!),
+                                    builder: (context) =>
+                                        FullScreen(imageData!),
                                   ),
                                 );
                               },
@@ -199,8 +223,10 @@ class _EditProductPageState extends State<EditProductPage> {
                                     width: 60,
                                     height: 60,
                                   ),
-                                  errorWidget: (context, url, error) => const Image(
-                                    image: AssetImage('assets/images/noimage.png'),
+                                  errorWidget: (context, url, error) =>
+                                      const Image(
+                                    image:
+                                        AssetImage('assets/images/noimage.png'),
                                     fit: BoxFit.cover,
                                     width: 60,
                                     height: 60,
@@ -214,17 +240,16 @@ class _EditProductPageState extends State<EditProductPage> {
                               width: 60,
                               height: 60,
                             )),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-          
-           
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   child: Column(
                     children: [
                       const SizedBox(height: 30),
@@ -392,15 +417,15 @@ class _EditProductPageState extends State<EditProductPage> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 40,top: 20),
-              child:  
-          _isLoading?   const CircularProgressWidget(text: "Actualizando...", color: AppColors.orange)
-          :ButtonDecorationWidget(
-              onPressed: _uploadImage,
-              margin: const EdgeInsets.symmetric(horizontal: 40),
-              text: "ACTUALIZAR",
-            ),
-            
+              padding: const EdgeInsets.only(bottom: 40, top: 20),
+              child: _isLoading
+                  ? const CircularProgressWidget(
+                      text: "Actualizando...", color: AppColors.orange)
+                  : ButtonDecorationWidget(
+                      onPressed: _uploadImage,
+                      margin: const EdgeInsets.symmetric(horizontal: 40),
+                      text: "ACTUALIZAR",
+                    ),
             ),
           ),
         ],
