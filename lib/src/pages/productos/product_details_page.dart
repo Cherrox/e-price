@@ -101,7 +101,7 @@ class ProductDetailsPage extends StatelessWidget {
                 ),
                 WidgetRichText(
                   text: 'Código de barras:  ',
-                  text2: productData['CODIGO DE BARRAS'],
+                  text2: int.parse(productData['CODIGO DE BARRAS']).toString(),
                   text3: '',
                   textAlign: TextAlign.start,
                 ),

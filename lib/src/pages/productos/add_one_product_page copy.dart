@@ -56,19 +56,19 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
     _origenController = TextEditingController();
     _especificacionesController = TextEditingController();
     //Para probar
-    _codigoController = TextEditingController(text: "5555555555");
-    _nombreController = TextEditingController(text: "Producto de prueba");
-    _codeController = TextEditingController(text: "5555555555");
-    _precioController = TextEditingController(text: "900");
-    _precioEnteroController = TextEditingController(text: "900");
-    _precioMiembrosController = TextEditingController(text: "785");
-    _nUMSKUController = TextEditingController(text: "5555555555");
-    _atributoController = TextEditingController(text: "DEFAULT");
-    _listPrecioController = TextEditingController(text: "negocio");
-    _unidadController = TextEditingController(text: "UND");
-    _nivelController = TextEditingController(text: "Premium");
-    _origenController = TextEditingController(text: "Dominicana");
-    _especificacionesController = TextEditingController(text: "Nuevo");
+    // _codigoController = TextEditingController(text: "5555555555");
+    // _nombreController = TextEditingController(text: "Producto de prueba");
+    // _codeController = TextEditingController(text: "5555555555");
+    // _precioController = TextEditingController(text: "900");
+    // _precioEnteroController = TextEditingController(text: "900");
+    // _precioMiembrosController = TextEditingController(text: "785");
+    // _nUMSKUController = TextEditingController(text: "5555555555");
+    // _atributoController = TextEditingController(text: "DEFAULT");
+    // _listPrecioController = TextEditingController(text: "negocio");
+    // _unidadController = TextEditingController(text: "UND");
+    // _nivelController = TextEditingController(text: "Premium");
+    // _origenController = TextEditingController(text: "Dominicana");
+    // _especificacionesController = TextEditingController(text: "Nuevo");
     // imageData = widget.productData['imageProduct'];
   }
 
