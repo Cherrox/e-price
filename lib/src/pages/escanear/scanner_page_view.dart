@@ -58,7 +58,7 @@ class _ScannerPageViewState extends State<ScannerPageView> {
       }
       if (scanResult != '-1') {
         final query = await FirebaseFirestore.instance
-            .collection('productos')
+            .collection('users/${widget.userDatos['id']}/productos')
             .where('CODIGO DE BARRAS', isEqualTo: scanResult)
             .get();
 

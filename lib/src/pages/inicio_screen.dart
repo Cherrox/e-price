@@ -47,6 +47,7 @@ class _InicioScreenState extends State<InicioScreen> {
     if (userDatos == null) {
       return const ShimerWidget();
     } else {
+      print("userDatos: ${userDatos}");
       final screens = [
         ScannerPageView(userDatos: userDatos),
         ProductosPage(userData: userDatos),
@@ -128,10 +129,10 @@ class _InicioScreenState extends State<InicioScreen> {
               selectedItemColor: AppColors.orange,
               unselectedItemColor: AppColors.pink,
               currentIndex: index,
-              selectedLabelStyle: const TextStyle(
-                  fontFamily: "MonB", fontSize: 13),
-              unselectedLabelStyle: const TextStyle(
-                  fontFamily: "MonB", fontSize: 13),
+              selectedLabelStyle:
+                  const TextStyle(fontFamily: "MonB", fontSize: 13),
+              unselectedLabelStyle:
+                  const TextStyle(fontFamily: "MonB", fontSize: 13),
               onTap: (int i) {
                 setState(() {
                   index = i;
