@@ -55,7 +55,7 @@ class _ProductosPageState extends State<ProductosPage> {
                 child: Container(
                   child: InputDecorationWidget(
                     hintText: 'Buscar',
-                    labelText: "buscar por descripción, origen o nivel",
+                    labelText: "buscar por nombre o codigo de barras",
                     controller: _searchController,
                     onChanged: (p0) => setState(() {}),
                   ),
@@ -93,12 +93,7 @@ class _ProductosPageState extends State<ProductosPage> {
                                     .toLowerCase()
                                     .contains(_searchController.value.text
                                         .toLowerCase()) ||
-                                element["NIVEL"]
-                                    .toString()
-                                    .toLowerCase()
-                                    .contains(_searchController.value.text
-                                        .toLowerCase()) ||
-                                element["ORIGEN"]
+                                element["CODIGO DE BARRAS"]
                                     .toString()
                                     .toLowerCase()
                                     .contains(_searchController.value.text

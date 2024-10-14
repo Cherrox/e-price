@@ -38,6 +38,8 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
   late TextEditingController _nivelController;
   late TextEditingController _origenController;
   late TextEditingController _especificacionesController;
+  late TextEditingController _cantidadController;
+  late TextEditingController _sucursalController;
 
   @override
   void initState() {
@@ -55,6 +57,8 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
     _nivelController = TextEditingController();
     _origenController = TextEditingController();
     _especificacionesController = TextEditingController();
+    _cantidadController = TextEditingController();
+    _sucursalController = TextEditingController();
     //Para probar
     // _codigoController = TextEditingController(text: "5555555555");
     // _nombreController = TextEditingController(text: "Producto de prueba");
@@ -110,6 +114,8 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
         'NIVEL': _nivelController.text,
         'ORIGEN': _origenController.text,
         'ESPECIFICACIONES': _especificacionesController.text,
+        'CANTIDAD': _cantidadController.text,
+        'SUCURSAL': _sucursalController.text,
         "createdAt": DateTime.now(),
       };
 
@@ -250,48 +256,51 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
                       children: [
                         const SizedBox(height: 30),
                         InputDecorationWidget(
-                          hintText: 'Nombre del producto',
-                          labelText: "Nombre del producto",
+                          hintText: 'Nombre del producto*',
+                          labelText: "Nombre del producto*",
                           controller: _nombreController,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Ingrese el nombre del producto';
+                              return ' Ingrese el nombre del producto';
                             }
                             return null;
                           },
                         ),
                         const SizedBox(height: 20),
                         InputDecorationWidget(
-                          hintText: 'Código de barras',
-                          labelText: "Código de barras",
+                          hintText: 'Código de barras*',
+                          labelText: "Código de barras*",
                           controller: _codigoController,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Ingrese el código de barras';
+                              return ' Ingrese el código de barras';
                             }
                             return null;
                           },
                         ),
                         const SizedBox(height: 20),
                         InputDecorationWidget(
-                          hintText: 'Código del artículo',
-                          labelText: "Código del artículo",
+                          hintText: 'Código del artículo*',
+                          labelText: "Código del artículo*",
                           controller: _codeController,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Ingrese el código del artículo';
+                              return ' Ingrese el código del artículo';
                             }
                             return null;
                           },
                         ),
                         const SizedBox(height: 20),
                         InputDecorationWidget(
-                          hintText: 'Precio',
-                          labelText: "Precio",
+                          hintText: 'Precio*',
+                          labelText: "Precio*",
                           controller: _precioController,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Ingrese el precio';
+                            }
+                            if (double.tryParse(value) == null) {
+                              return ' Debe de ingresar un número decimal';
                             }
                             return null;
                           },
@@ -302,8 +311,10 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
                           labelText: "Precio entero",
                           controller: _precioEnteroController,
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Ingrese el precio entero';
+                            if (value!.isNotEmpty) {
+                              if (double.tryParse(value) == null) {
+                                return ' Debe de ingresar un número decimal';
+                              }
                             }
                             return null;
                           },
@@ -314,8 +325,10 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
                           labelText: "Precio para miembros",
                           controller: _precioMiembrosController,
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Ingrese el precio para miembros';
+                            if (value!.isNotEmpty) {
+                              if (double.tryParse(value) == null) {
+                                return ' Debe de ingresar un número decimal';
+                              }
                             }
                             return null;
                           },
@@ -326,9 +339,9 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
                           labelText: "NUM.SKU",
                           controller: _nUMSKUController,
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Ingrese el NUM.SKU';
-                            }
+                            // if (value!.isEmpty) {
+                            //   return 'Ingrese el NUM.SKU';
+                            // }
                             return null;
                           },
                         ),
@@ -338,9 +351,9 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
                           labelText: "Atributo de la plantilla",
                           controller: _atributoController,
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Ingrese el atributo de la plantilla';
-                            }
+                            // if (value!.isEmpty) {
+                            //   return 'Ingrese el atributo de la plantilla';
+                            // }
                             return null;
                           },
                         ),
@@ -350,9 +363,9 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
                           labelText: "Lista de precio",
                           controller: _listPrecioController,
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Ingrese la lista de precio';
-                            }
+                            // if (value!.isEmpty) {
+                            //   return 'Ingrese la lista de precio';
+                            // }
                             return null;
                           },
                         ),
@@ -362,9 +375,9 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
                           labelText: "Unidad",
                           controller: _unidadController,
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Ingrese la unidad';
-                            }
+                            // if (value!.isEmpty) {
+                            //   return 'Ingrese la unidad';
+                            // }
                             return null;
                           },
                         ),
@@ -374,9 +387,9 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
                           labelText: "Nivel",
                           controller: _nivelController,
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Ingrese el nivel';
-                            }
+                            // if (value!.isEmpty) {
+                            //   return 'Ingrese el nivel';
+                            // }
                             return null;
                           },
                         ),
@@ -386,9 +399,9 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
                           labelText: "Origen",
                           controller: _origenController,
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Ingrese el origen';
-                            }
+                            // if (value!.isEmpty) {
+                            //   return 'Ingrese el origen';
+                            // }
                             return null;
                           },
                         ),
@@ -398,9 +411,36 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
                           labelText: "Especificaciones",
                           controller: _especificacionesController,
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Ingrese las especificaciones';
+                            // if (value!.isEmpty) {
+                            //   return 'Ingrese las especificaciones';
+                            // }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        InputDecorationWidget(
+                          hintText: 'Cantidad',
+                          labelText: "Cantidad",
+                          controller: _cantidadController,
+                          validator: (value) {
+                            if (value!.isNotEmpty) {
+                              if (int.tryParse(value) == null) {
+                                return ' Debe de ingresar un número';
+                              }
                             }
+
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        InputDecorationWidget(
+                          hintText: 'Sucursal',
+                          labelText: "Sucursal",
+                          controller: _sucursalController,
+                          validator: (value) {
+                            // if (value!.isEmpty) {
+                            //   return 'Ingrese la sucursal';
+                            // }
                             return null;
                           },
                         ),
