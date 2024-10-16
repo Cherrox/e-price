@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, library_prefixes, use_build_context_synchronously
 
 import 'dart:async';
+import 'package:e_price/src/pages/escanear/scanner_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -41,49 +42,53 @@ class _ScannerPageViewState extends State<ScannerPageView> {
 
   Future<void> _scanBarCode() async {
     try {
-      // final scanResult = await FlutterBarcodeScanner.scanBarcode(
-      //   '#FFA500',
-      //   'Cancelar',
-      //   true,
-      //   ScanMode.BARCODE,
-      // );
-      var scanResult;
-      var res = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const SimpleBarcodeScannerPage(),
-          ));
-      if (res is String) {
-        scanResult = res;
-      }
-      if (scanResult != '-1') {
-        final query = await FirebaseFirestore.instance
-            .collection('users/${widget.userDatos['id']}/productos')
-            .where('CODIGO DE BARRAS', isEqualTo: scanResult)
-            .get();
+      // // final scanResult = await FlutterBarcodeScanner.scanBarcode(
+      // //   '#FFA500',
+      // //   'Cancelar',
+      // //   true,
+      // //   ScanMode.BARCODE,
+      // // );
+      // var scanResult;
+      // var res = await Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => const SimpleBarcodeScannerPage(),
+      //     ));
+      // if (res is String) {
+      //   scanResult = res;
+      // }
+      // if (scanResult != '-1') {
+      //   final query = await FirebaseFirestore.instance
+      //       .collection('users/${widget.userDatos['id']}/productos')
+      //       .where('CODIGO DE BARRAS', isEqualTo: scanResult)
+      //       .get();
 
-        if (query.docs.isNotEmpty) {
-          final doc = query.docs.first;
-          if (doc['userId'] == widget.userDatos['id'].toString()) {
-            final modifiedData = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    EditScannedDataPage(productData: doc.data(), docId: doc.id),
-              ),
-            );
+      //   if (query.docs.isNotEmpty) {
+      //     final doc = query.docs.first;
+      //     if (doc['userId'] == widget.userDatos['id'].toString()) {
+      //       final modifiedData = await Navigator.push(
+      //         context,
+      //         MaterialPageRoute(
+      //           builder: (context) =>
+      //               EditScannedDataPage(productData: doc.data(), docId: doc.id),
+      //         ),
+      //       );
 
-            if (modifiedData != null) {
-              setState(() {});
-            }
-          } else {
-            showSnackbar(
-                context, 'Usted no es el propietario de estos productos');
-          }
-        } else {
-          showSnackbar(context, 'El producto no existe o fue eliminado');
-        }
-      }
+      //       if (modifiedData != null) {
+      //         setState(() {});
+      //       }
+      //     } else {
+      //       showSnackbar(
+      //           context, 'Usted no es el propietario de estos productos');
+      //     }
+      //   } else {
+      //     showSnackbar(context, 'El producto no existe o fue eliminado');
+      //   }
+      // }
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ScannerPage(
+                userDatos: widget.userDatos,
+              )));
     } on PlatformException {
       setState(() {
         showSnackbar(context, "Error al escanear el código de barras");
@@ -93,6 +98,8 @@ class _ScannerPageViewState extends State<ScannerPageView> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
