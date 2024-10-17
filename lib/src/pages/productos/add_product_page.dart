@@ -76,7 +76,7 @@ class _AddProductPageState extends State<AddProductPage> {
           QuerySnapshot query = await refCollection
               .where('CODIGO DEL ARTICULO', isEqualTo: productCode)
               .get();
-
+          print("Query: ${query.docs}");
           if (query.docs.isNotEmpty) {
             // Producto existe, verificar propiedad
             DocumentSnapshot doc = query.docs.first;

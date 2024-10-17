@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_price/src/pages/escanear/edit_scanner.dart';
+import 'package:e_price/src/pages/productos/add_one_product_page%20copy.dart';
 import 'package:e_price/src/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,24 +44,60 @@ class _ScannerPageState extends State<ScannerPage> {
 
       if (query.docs.isNotEmpty) {
         final doc = query.docs.first;
-        if (doc['userId'] == widget.userDatos['id'].toString()) {
-          final modifiedData = await Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  EditScannedDataPage(productData: doc.data(), docId: doc.id),
+        // if (doc['userId'] == widget.userDatos['id'].toString()) {
+        final modifiedData = await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditScannedDataPage(
+              productData: doc.data(),
+              docId: doc.id,
+              userData: widget.userDatos,
             ),
-          );
+          ),
+        );
 
-          if (modifiedData != null) {
-            setState(() {});
-          }
-        } else {
-          showSnackbar(
-              context, 'Usted no es el propietario de estos productos');
+        if (modifiedData != null) {
+          setState(() {});
         }
+        // } else {
+        //   showSnackbar(
+        //       context, 'Usted no es el propietario de estos productos');
+        // }
       } else {
-        showSnackbar(context, 'El producto no existe o fue eliminado');
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog.adaptive(
+            title: const Text(
+              'Confirmar',
+              textAlign: TextAlign.center,
+            ),
+            content: const Text(
+                'El producto no existe o fue eliminado ¿Desea de agregar el producto?'),
+            actions: [
+              TextButton(
+                child: Text("Si"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => AddOneProductPage(
+                        userData: widget.userDatos,
+                        barCode: _barCodeController.value.text,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              TextButton(
+                child: Text("No"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+        // showSnackbar(context, 'El producto no existe o fue eliminado');
       }
     }
   }

@@ -1,14 +1,20 @@
 // ignore_for_file: library_private_types_in_public_api
+import 'package:e_price/src/pages/productos/edit_product_page.dart';
 import 'package:e_price/src/services/print_service.dart';
 import 'package:flutter/material.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:e_price/src/screen.dart';
 
 class EditScannedDataPage extends StatefulWidget {
+  final dynamic userData;
   final Map<String, dynamic> productData;
   final String docId;
 
-  const EditScannedDataPage({super.key, required this.productData, required this.docId});
+  const EditScannedDataPage(
+      {super.key,
+      required this.productData,
+      required this.docId,
+      required this.userData});
 
   @override
   _EditScannedDataPageState createState() => _EditScannedDataPageState();
@@ -24,11 +30,16 @@ class _EditScannedDataPageState extends State<EditScannedDataPage> {
   @override
   void initState() {
     super.initState();
-    _codigoController = TextEditingController(text: widget.productData['CODIGO DE BARRAS']);
-    _nombreController = TextEditingController(text: widget.productData['NOMBRE DEL PRODUCTO']);
-    _codeController = TextEditingController(text: widget.productData['CODIGO DEL ARTICULO']);
-    _precioController = TextEditingController(text: widget.productData['PRECIO']);
-    _proveedorController = TextEditingController(text: widget.productData['userName']);
+    _codigoController =
+        TextEditingController(text: widget.productData['CODIGO DE BARRAS']);
+    _nombreController =
+        TextEditingController(text: widget.productData['NOMBRE DEL PRODUCTO']);
+    _codeController =
+        TextEditingController(text: widget.productData['CODIGO DEL ARTICULO']);
+    _precioController =
+        TextEditingController(text: widget.productData['PRECIO']);
+    _proveedorController =
+        TextEditingController(text: widget.productData['userName']);
   }
 
   Barcode getBarcodeType(String barcode) {
@@ -80,12 +91,14 @@ class _EditScannedDataPageState extends State<EditScannedDataPage> {
                             children: [
                               Text(
                                 _nombreController.text,
-                                style: const TextStyle(fontSize: 20, color: Colors.white),
+                                style: const TextStyle(
+                                    fontSize: 20, color: Colors.white),
                                 textAlign: TextAlign.center,
                               ),
                               Text(
                                 _codeController.text,
-                                style: const TextStyle(fontSize: 15, color: Colors.white),
+                                style: const TextStyle(
+                                    fontSize: 15, color: Colors.white),
                                 textAlign: TextAlign.center,
                               ),
                             ],
@@ -98,12 +111,16 @@ class _EditScannedDataPageState extends State<EditScannedDataPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(_codeController.text, style: const TextStyle(fontSize: 15)),
-                                Text(parsedTime, style: const TextStyle(fontSize: 15)),
-                                Text(_codigoController.text, style: const TextStyle(fontSize: 15)),
+                                Text(_codeController.text,
+                                    style: const TextStyle(fontSize: 15)),
+                                Text(parsedTime,
+                                    style: const TextStyle(fontSize: 15)),
+                                Text(_codigoController.text,
+                                    style: const TextStyle(fontSize: 15)),
                               ],
                             ),
-                            Text("\$ ${_precioController.text}", style: const TextStyle(fontSize: 15)),
+                            Text("\$ ${_precioController.text}",
+                                style: const TextStyle(fontSize: 15)),
                           ],
                         ),
                       ],
@@ -132,7 +149,7 @@ class _EditScannedDataPageState extends State<EditScannedDataPage> {
               child: const Text('Imprimir'),
               onPressed: () async {
                 Navigator.of(context).pop();
-               final text = """
+                final text = """
                   --------------------------------------
                   |${_nombreController.text.padRight(40)}
                   |${_codeController.text.padRight(40)}
@@ -159,7 +176,8 @@ class _EditScannedDataPageState extends State<EditScannedDataPage> {
         iconTheme: const IconThemeData(color: AppColors.white),
         centerTitle: true,
         title: const Text('Imprimir Etiqueta',
-            style: TextStyle(fontFamily: "MonB", color: AppColors.white, fontSize: 20)),
+            style: TextStyle(
+                fontFamily: "MonB", color: AppColors.white, fontSize: 20)),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -167,7 +185,8 @@ class _EditScannedDataPageState extends State<EditScannedDataPage> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              const Text("Código de Barras", style: TextStyle(fontFamily: "MonB", fontSize: 20)),
+              const Text("Código de Barras",
+                  style: TextStyle(fontFamily: "MonB", fontSize: 20)),
               BarcodeWidget(
                 barcode: getBarcodeType(widget.productData['CODIGO DE BARRAS']),
                 data: widget.productData['CODIGO DE BARRAS'],
@@ -210,7 +229,24 @@ class _EditScannedDataPageState extends State<EditScannedDataPage> {
               MaterialButtomWidget(
                 color: AppColors.orange,
                 onPressed: _showPrintPreview,
-                title: 'Continuar',
+                title: 'Imprimir',
+              ),
+              const SizedBox(height: 20),
+              MaterialButtomWidget(
+                color: AppColors.orange,
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditProductPage(
+                        productData: widget.productData,
+                        docId: widget.productData["idDoc"],
+                        userData: widget.userData,
+                      ),
+                    ),
+                  );
+                },
+                title: 'Editar',
               ),
             ],
           ),

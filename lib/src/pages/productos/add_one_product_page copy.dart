@@ -13,7 +13,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class AddOneProductPage extends StatefulWidget {
   final dynamic userData;
-  const AddOneProductPage({super.key, required this.userData});
+  final String? barCode;
+  const AddOneProductPage({
+    super.key,
+    required this.userData,
+    this.barCode,
+  });
 
   @override
   State<AddOneProductPage> createState() => _AddOneProductPageState();
@@ -44,7 +49,7 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
   @override
   void initState() {
     super.initState();
-    _codigoController = TextEditingController();
+    _codigoController = TextEditingController(text: widget.barCode ?? "");
     _nombreController = TextEditingController();
     _codeController = TextEditingController();
     _precioController = TextEditingController();
