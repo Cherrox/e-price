@@ -1,13 +1,15 @@
+import 'package:e_price/src/helpers/printer.dart';
+import 'package:e_price/src/screen.dart';
 import 'package:flutter/services.dart';
 
 class PrinterService {
-  static const MethodChannel _channel = MethodChannel('e.price.gs/printer');
-
-  Future<void> printText(String content) async {
+  Future<String?> printText(String content) async {
     try {
-      await _channel.invokeMethod('printText', {'content': content});
-    } on PlatformException catch (e) {
-      print("FALLO LA IMPRESORA: '${e.message}'.");
+      var result = await PrinterManager.startPrinting(content); // 开启黑标
+      return null;
+    } catch (e) {
+      print("FALLO LA IMPRESORA: '${e}'.");
+      return e.toString();
     }
   }
 }

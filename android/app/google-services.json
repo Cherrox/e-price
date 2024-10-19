@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "1009897576221-qavbvb6vdflkjm6qnafoehitso1m4g0q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "e.price.gs",
+            "certificate_hash": "981bb69b1fe214951aefcc4e990ead8fcf03173d"
+          }
+        },
+        {
           "client_id": "1009897576221-k80m529ehrethqf3nkq7ika5oke62qac.apps.googleusercontent.com",
           "client_type": 3
         }

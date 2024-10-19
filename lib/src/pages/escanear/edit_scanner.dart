@@ -159,7 +159,10 @@ class _EditScannedDataPageState extends State<EditScannedDataPage> {
                   --------------------------------------
                 """;
                 //await PrinterService().print(text);
-                printerService.printText(text);
+                var result = await printerService.printText(text);
+                if (result != null) {
+                  showSnackbar(context, "Error Imprimiendo: $result");
+                }
               },
             ),
           ],

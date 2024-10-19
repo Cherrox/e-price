@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -33,10 +30,7 @@ class DefaultFirebaseOptions {
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -63,6 +57,29 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1009897576221',
     projectId: 'e-price-13564',
     storageBucket: 'e-price-13564.appspot.com',
+    androidClientId: '1009897576221-98hajug3jvd1ikpptc0qusrvsruj1vqs.apps.googleusercontent.com',
+    iosClientId: '1009897576221-8klso8240d3qf43b0onqu945qo51l7no.apps.googleusercontent.com',
     iosBundleId: 'com.example.ePrice',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCSeRFY9p4sPO1gOa-RYSPd2IYyK0iqWkU',
+    appId: '1:1009897576221:web:35f8d1f6c83036d577b3f4',
+    messagingSenderId: '1009897576221',
+    projectId: 'e-price-13564',
+    authDomain: 'e-price-13564.firebaseapp.com',
+    storageBucket: 'e-price-13564.appspot.com',
+    measurementId: 'G-J6XLY531ML',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyCSeRFY9p4sPO1gOa-RYSPd2IYyK0iqWkU',
+    appId: '1:1009897576221:web:daae736a0a4e7c1f77b3f4',
+    messagingSenderId: '1009897576221',
+    projectId: 'e-price-13564',
+    authDomain: 'e-price-13564.firebaseapp.com',
+    storageBucket: 'e-price-13564.appspot.com',
+    measurementId: 'G-TER73H6VDT',
+  );
+
 }
