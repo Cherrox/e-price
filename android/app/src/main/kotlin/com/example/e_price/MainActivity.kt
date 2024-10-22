@@ -43,7 +43,7 @@ class MainActivity : FlutterActivity() {
                 "startPrinting" -> {
                     val content: String? = call.argument("content")
                     if (content != null) {
-                        startPrinting(content)
+                        startPrinting("Testing printing option")
                         result.success("Printing started")
                     } else {
                         result.error("INVALID_ARGUMENT", "Content cannot be null", null)
