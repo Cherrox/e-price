@@ -42,11 +42,16 @@ class MainActivity : FlutterActivity() {
                 }
                 "startPrinting" -> {
                     val content: String? = call.argument("content")
+<<<<<<< HEAD
                     val barcode: String? = call.argument("barcode")
                     val price: String? = call.argument("price")
                     if (content != null && barcode != null && price != null) {
                         startPrinting(content, barcode, price)
                         //startPrinting("Imprimiendo contenido de prueba")
+=======
+                    if (content != null) {
+                        startPrinting("Testing printing option")
+>>>>>>> 0bb5e83933fe8f79d6955086534b7b1c6c4330c5
                         result.success("Printing started")
                     } else {
                         result.error("INVALID_ARGUMENT", "Content cannot be null", null)
