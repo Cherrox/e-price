@@ -149,22 +149,21 @@ class _EditScannedDataPageState extends State<EditScannedDataPage> {
               child: const Text('Imprimir'),
               onPressed: () async {
                 Navigator.of(context).pop();
-                final text = """
-${_codeController.text}
-
-${_codigoController.text} - ${_nombreController.text}
-------------------------------------------------------
-$parsedTime
-\$${_precioController.text}
-------------------------------------------------------
-                """;
+                final itemName = """${_nombreController.text}""";
                 //await PrinterService().print(text);
                 // print(text);
-                var result =
-                    await printerService.printText(text, _codeController.text);
+                print(
+                    "Data: Otros parametros: \$${widget.productData["PRECIO ENTERO"]}");
+                var result = await printerService.printText(
+                  itemName,
+                  _codeController.text,
+                  "\$${_precioController.text}",
+                  "Fecha: $parsedTime",
+                  "Otros parametros: \$${widget.productData["PRECIO ENTERO"]} Kg",
+                );
                 if (result != null) {
                   showSnackbar(context, "Error Imprimiendo: $result");
-                }
+                } else {}
               },
             ),
           ],

@@ -11,7 +11,13 @@ class PrinterManager {
   }
 
   // 开始打印 卡板标
-  static Future<String?> startPrinting(String content, String barcode) async {
+  static Future<String?> startPrinting(
+    String content,
+    String barcode,
+    String price,
+    String date,
+    String others,
+  ) async {
     try {
       bool containsChinese(String text) {
         return RegExp('[\u4e00-\u9fa5]').hasMatch(text);
@@ -20,8 +26,11 @@ class PrinterManager {
       bool hasChinese = containsChinese(content.toString().trim());
       if (!hasChinese) {
         var result = await _channel.invokeMethod('startPrinting', {
-          "content": content,
+          "itemName": content,
           "barcode": barcode,
+          "price": price,
+          "date": date,
+          "others": others,
         });
         print("result: $result");
       } else {
