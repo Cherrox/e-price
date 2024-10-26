@@ -42,8 +42,11 @@ class MainActivity : FlutterActivity() {
                 }
                 "startPrinting" -> {
                     val content: String? = call.argument("content")
-                    if (content != null) {
-                        startPrinting(content)
+                    val barcode: String? = call.argument("barcode")
+                    val price: String? = call.argument("price")
+                    if (content != null && barcode != null && price != null) {
+                        startPrinting(content, barcode, price)
+                        //startPrinting("Imprimiendo contenido de prueba")
                         result.success("Printing started")
                     } else {
                         result.error("INVALID_ARGUMENT", "Content cannot be null", null)
@@ -75,7 +78,7 @@ class MainActivity : FlutterActivity() {
     }
 
 //     // 打印内容 卡板标
-    private fun startPrinting(content: String) {
+    private fun startPrinting(content: String, barcode: String, price: String) {
 
         val barcodeFormat: BarcodeFormat = BarcodeFormat.CODE_128
 
@@ -83,24 +86,31 @@ class MainActivity : FlutterActivity() {
             printUtil = PrintUtil.getInstance(this)
         }
          PrintUtil.printEnableMark(true) // 开启黑标
-        PrintUtil.setFeedPaperSpace(1000) // 设置走纸距离
+        PrintUtil.setFeedPaperSpace(250) // 设置走纸距离
         PrintUtil.setUnwindPaperLen(10) // 设置回纸距离
 //        PrintUtil.printLine(5) //打印行数
-//         PrintUtil.printBarcode(
-//             PrintConfig.Align.ALIGN_CENTER, // 居中
-//             300, //一维码高度
-//             content, //一维码内容
-//             PrintConfig.BarCodeType.TOP_TYPE_CODE128, // 一维码类型
-//             PrintConfig.HRIPosition.POSITION_NONE // 一维码文本内容位置
-//         )
-        val barcodeBitmap = createBarcodeBitmap(content, 400, 400)
-        PrintUtil.printBitmap(PrintConfig.Align.ALIGN_CENTER, barcodeBitmap)
+         PrintUtil.printBarcode(
+             PrintConfig.Align.ALIGN_CENTER, // 居中
+             55, //一维码高度
+             barcode, //一维码内容
+             PrintConfig.BarCodeType.TOP_TYPE_CODE128, // 一维码类型
+             PrintConfig.HRIPosition.POSITION_NONE // 一维码文本内容位置
+         )
+        //val barcodeBitmap = createBarcodeBitmap(content, 400, 400)
+        //PrintUtil.printBitmap(PrintConfig.Align.ALIGN_CENTER, barcodeBitmap)
         PrintUtil.printText(
             PrintConfig.Align.ALIGN_CENTER, // 居中
-            6, //字体大小
-            true, //是否粗体
-            true, // 是否下划线
+            2, //字体大小
+            false, //是否粗体
+            false, // 是否下划线
             content // 文本内容
+        )
+                PrintUtil.printText(
+            PrintConfig.Align.ALIGN_CENTER, // 居中
+            4, //字体大小
+            true, //是否粗体
+            false, // 是否下划线
+            price // 文本内容
         )
          PrintUtil.start() //开始走纸
     }

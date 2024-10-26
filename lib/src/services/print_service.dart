@@ -3,9 +3,9 @@ import 'package:e_price/src/screen.dart';
 import 'package:flutter/services.dart';
 
 class PrinterService {
-  Future<String?> printText(String content) async {
+  Future<String?> printText(String content, String barcode) async {
     try {
-      var result = await PrinterManager.startPrinting(content); // 开启黑标
+      var result = await PrinterManager.startPrinting(content, barcode); // 开启黑标
       return null;
     } catch (e) {
       print("FALLO LA IMPRESORA: '${e}'.");

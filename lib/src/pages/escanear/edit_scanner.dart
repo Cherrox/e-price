@@ -150,16 +150,18 @@ class _EditScannedDataPageState extends State<EditScannedDataPage> {
               onPressed: () async {
                 Navigator.of(context).pop();
                 final text = """
-                  --------------------------------------
-                  |${_nombreController.text.padRight(40)}
-                  |${_codeController.text.padRight(40)}
-                  --------------------------------------
-                  |${_codeController.text.padRight(20)} ${parsedTime.padRight(20)}
-                  |${_codigoController.text.padRight(20)} \$${_precioController.text.padRight(20)}
-                  --------------------------------------
+${_codeController.text}
+
+${_codigoController.text} - ${_nombreController.text}
+------------------------------------------------------
+$parsedTime
+\$${_precioController.text}
+------------------------------------------------------
                 """;
                 //await PrinterService().print(text);
-                var result = await printerService.printText(text);
+                // print(text);
+                var result =
+                    await printerService.printText(text, _codeController.text);
                 if (result != null) {
                   showSnackbar(context, "Error Imprimiendo: $result");
                 }

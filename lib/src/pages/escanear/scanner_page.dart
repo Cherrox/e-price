@@ -108,7 +108,7 @@ class _ScannerPageState extends State<ScannerPage> {
       if (focusNode.hasFocus) {
         Future.delayed(const Duration(milliseconds: 50)).then(
           (value) {
-            SystemChannels.textInput.invokeMethod('TextInput.hide');
+            //SystemChannels.textInput.invokeMethod('TextInput.hide');
           },
         );
       }
@@ -129,7 +129,7 @@ class _ScannerPageState extends State<ScannerPage> {
     var size = MediaQuery.of(context).size;
     Future.delayed(Duration(milliseconds: 50)).then(
       (value) {
-        SystemChannels.textInput.invokeMethod('TextInput.hide');
+        //SystemChannels.textInput.invokeMethod('TextInput.hide');
       },
     );
     focusNode.requestFocus();
