@@ -1,4 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api
+import 'package:e_price/src/helpers/formats.dart';
 import 'package:e_price/src/pages/productos/edit_product_page.dart';
 import 'package:e_price/src/services/print_service.dart';
 import 'package:flutter/material.dart';
@@ -152,14 +153,18 @@ class _EditScannedDataPageState extends State<EditScannedDataPage> {
                 final itemName = """${_nombreController.text}""";
                 //await PrinterService().print(text);
                 // print(text);
-                print(
-                    "Data: Otros parametros: \$${widget.productData["PRECIO ENTERO"]}");
                 var result = await printerService.printText(
                   itemName,
                   _codeController.text,
-                  "\$${_precioController.text}",
-                  "Fecha: $parsedTime",
-                  "Otros parametros: \$${widget.productData["PRECIO ENTERO"]} Kg",
+                  '''\$${MyFormats().currencyFormat(double.parse(_precioController.text))}''',
+                  '''
+
+$parsedTime
+''',
+                  '''
+
+Otros parametros: \$${MyFormats().currencyFormat(double.parse(widget.productData["PRECIO ENTERO"]))} Kg
+''',
                 );
                 if (result != null) {
                   showSnackbar(context, "Error Imprimiendo: $result");

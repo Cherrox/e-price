@@ -94,29 +94,37 @@ class MainActivity : FlutterActivity() {
         //val barcodeBitmap = createBarcodeBitmap(content, 400, 400)
         //PrintUtil.printBitmap(PrintConfig.Align.ALIGN_CENTER, barcodeBitmap)
             PrintUtil.printText(
-            PrintConfig.Align.ALIGN_CENTER, // 居中
-            4, //字体大小
+            PrintConfig.Align.ALIGN_LEFT, // 居中
+            PrintConfig.FontSize.TOP_FONT_SIZE_XMIDDLE, //字体大小
             true, //是否粗体
             false, // 是否下划线
             itemName // 文本内容
         )
         PrintUtil.printText(
             PrintConfig.Align.ALIGN_LEFT, // 居中
-            2, //字体大小
+            PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, //字体大小
             false, //是否粗体
             false, // 是否下划线
             date // 文本内容
         )
                 PrintUtil.printText(
-            PrintConfig.Align.ALIGN_RIGHT, // 居中
-            6, //字体大小
+            PrintConfig.Align.ALIGN_CENTER, // 居中
+            PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, //字体大小
+            false, //是否粗体
+            false, // 是否下划线
+            "Precio X Und: " // 文本内容
+        )
+                                PrintUtil.printText(
+            PrintConfig.Align.ALIGN_CENTER, // 居中
+            PrintConfig.FontSize.TOP_FONT_SIZE_SUPER, //字体大小
             true, //是否粗体
             false, // 是否下划线
             price // 文本内容
         )
+
                 PrintUtil.printText(
-            PrintConfig.Align.ALIGN_LEFT, // 居中
-            2, //字体大小
+            PrintConfig.Align.ALIGN_RIGHT, // 居中
+            PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, //字体大小
             false, //是否粗体
             false, // 是否下划线
             others // 文本内容
@@ -130,7 +138,7 @@ class MainActivity : FlutterActivity() {
          )
             PrintUtil.printText(
             PrintConfig.Align.ALIGN_CENTER, // 居中
-            2, //字体大小
+            PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, //字体大小
             false, //是否粗体
             false, // 是否下划线
             barcode // 文本内容
