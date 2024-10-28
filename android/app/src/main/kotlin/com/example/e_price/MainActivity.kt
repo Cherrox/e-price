@@ -88,8 +88,8 @@ class MainActivity : FlutterActivity() {
             printUtil = PrintUtil.getInstance(this)
         }
          PrintUtil.printEnableMark(true) // 开启黑标
-        PrintUtil.setFeedPaperSpace(250) // 设置走纸距离
-        PrintUtil.setUnwindPaperLen(10) // 设置回纸距离
+        PrintUtil.setFeedPaperSpace(140) // 设置走纸距离
+        PrintUtil.setUnwindPaperLen(40) // 设置回纸距离
 //        PrintUtil.printLine(5) //打印行数
         //val barcodeBitmap = createBarcodeBitmap(content, 400, 400)
         //PrintUtil.printBitmap(PrintConfig.Align.ALIGN_CENTER, barcodeBitmap)
@@ -101,44 +101,44 @@ class MainActivity : FlutterActivity() {
             itemName // 文本内容
         )
         PrintUtil.printText(
-            PrintConfig.Align.ALIGN_LEFT, // 居中
+            PrintConfig.Align.ALIGN_RIGHT, // 居中
             PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, //字体大小
             false, //是否粗体
             false, // 是否下划线
             date // 文本内容
         )
                 PrintUtil.printText(
-            PrintConfig.Align.ALIGN_CENTER, // 居中
-            PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, //字体大小
+            PrintConfig.Align.ALIGN_LEFT, // 居中
+            PrintConfig.FontSize.TOP_FONT_SIZE_XSMALL, //字体大小
             false, //是否粗体
             false, // 是否下划线
-            "Precio X Und: " // 文本内容
+            "Precio X Und:" // 文本内容
         )
                                 PrintUtil.printText(
-            PrintConfig.Align.ALIGN_CENTER, // 居中
-            PrintConfig.FontSize.TOP_FONT_SIZE_SUPER, //字体大小
+            PrintConfig.Align.ALIGN_RIGHT, // 居中
+            PrintConfig.FontSize.TOP_FONT_SIZE_XSUPER, //字体大小
             true, //是否粗体
             false, // 是否下划线
             price // 文本内容
         )
 
                 PrintUtil.printText(
-            PrintConfig.Align.ALIGN_RIGHT, // 居中
-            PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, //字体大小
+            PrintConfig.Align.ALIGN_CENTER, // 居中
+            PrintConfig.FontSize.TOP_FONT_SIZE_XSMALL, //字体大小
             false, //是否粗体
             false, // 是否下划线
             others // 文本内容
         )
              PrintUtil.printBarcode(
              PrintConfig.Align.ALIGN_CENTER, // 居中
-             55, //一维码高度
+             50, //一维码高度
              barcode, //一维码内容
              PrintConfig.BarCodeType.TOP_TYPE_CODE128, // 一维码类型
              PrintConfig.HRIPosition.POSITION_NONE // 一维码文本内容位置
          )
             PrintUtil.printText(
             PrintConfig.Align.ALIGN_CENTER, // 居中
-            PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, //字体大小
+            PrintConfig.FontSize.TOP_FONT_SIZE_XMIDDLE, //字体大小
             false, //是否粗体
             false, // 是否下划线
             barcode // 文本内容
