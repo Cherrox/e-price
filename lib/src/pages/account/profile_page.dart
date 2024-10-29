@@ -5,6 +5,8 @@ import 'package:e_price/src/pages/account/edit_profile.dart';
 import 'package:e_price/src/screen.dart';
 import 'package:e_price/src/widgets/cerrar_seccion.dart';
 import 'package:flutter/material.dart';
+import 'package:googleapis/drive/v3.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:share_plus/share_plus.dart';
 //import 'package:url_launcher/url_launcher.dart';
 
@@ -22,6 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String _loadingContent = "";
   bool _driveOption = false;
   bool _localOption = false;
+
   void _onTap(String title) {
     setState(() {
       _selectedTitle = title;
@@ -29,9 +32,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> downloadFile() async {
+    Navigator.of(context).pop();
     if (_driveOption == false && _localOption == false) {
       showSnackbar(context, "Debe de seleccionar una opción");
-    }
+    } else {}
   }
 
   Future<void> downloadStock() async {
