@@ -43,6 +43,7 @@ dependencies:
   googleapis: ^13.2.0
   flutter_secure_storage: ^5.0.2
   url_launcher: ^6.0.0-nullsafety
+  envied: ^0.5.4+1
 
 
 
@@ -50,6 +51,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  envied_generator: ^0.5.4+1
+  build_runner: ^2.4.13
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
