@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:e_price/env.dart';
 import 'package:e_price/src/helpers/secure_storage.dart';
 import 'package:googleapis/drive/v3.dart' as ga;
-import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 import 'package:url_launcher/url_launcher.dart';
@@ -13,31 +12,41 @@ const _scopes = ['https://www.googleapis.com/auth/drive.file'];
 class GoogleDriveHelper {
   final storage = SecureStorage();
   //Get Authenticated Http Client
-  Future<http.Client> getHttpClient() async {
-    //Get Credentials
-    var credentials = await storage.getCredentials();
-    if (credentials == null) {
-      //Needs user authentication
-      var authClient =
-          await clientViaUserConsent(ClientId(_clientId), _scopes, (url) {
-        //Open Url in Browser
-        launch(url);
-      });
-      //Save Credentials
-      await storage.saveCredentials(authClient.credentials.accessToken,
-          authClient.credentials.refreshToken!);
-      return authClient;
-    } else {
-      print(credentials["expiry"]);
-      //Already authenticated
-      return authenticatedClient(
-        http.Client(),
-        AccessCredentials(
-            AccessToken(credentials["type"], credentials["data"],
-                DateTime.tryParse(credentials["expiry"])!),
-            credentials["refreshToken"],
-            _scopes),
-      );
+
+  Future<http.Client?> getHttpClient() async {
+    try {
+      //Get Credentials
+      // var credentials = await storage.getCredentials();
+      // if (credentials == null) {
+      //   //Needs user authentication
+      //   var authClient = await clientViaUserConsent(
+      //     ClientId(_clientId),
+      //     _scopes,
+      //     (url) {
+      //       //Open Url in Browser
+      //       print("LaunchUrl: ${url}");
+      //       launch(url);
+      //     },
+      //   );
+      //   //Save Credentials
+      //   await storage.saveCredentials(authClient.credentials.accessToken,
+      //       authClient.credentials.refreshToken!);
+      //   return authClient;
+      // } else {
+      //   print(credentials["expiry"]);
+      //   //Already authenticated
+      //   return authenticatedClient(
+      //     http.Client(),
+      //     AccessCredentials(
+      //         AccessToken(credentials["type"], credentials["data"],
+      //             DateTime.tryParse(credentials["expiry"])!),
+      //         credentials["refreshToken"],
+      //         _scopes),
+      //   );
+      // }
+    } catch (e) {
+      print("Error: $e");
+      return null;
     }
   }
 
@@ -81,6 +90,9 @@ class GoogleDriveHelper {
   Future<String?> uploadFileToGoogleDrive(File file) async {
     try {
       var client = await getHttpClient();
+      if (client == null) {
+        return "Error con el http cliente";
+      }
       var drive = ga.DriveApi(client);
       String? folderId = await _getFolderId(drive);
       if (folderId == null) {

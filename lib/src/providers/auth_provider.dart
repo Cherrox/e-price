@@ -90,59 +90,69 @@ class AuthProviderP extends ChangeNotifier {
     FocusScope.of(context).unfocus();
 
     try {
-      final GoogleSignInAccount? googleSignInAccount =
-          await GoogleSignIn().signIn();
-      if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-        // Obtener los datos del usuario desde la base de datos
-        dynamic userData = await getUserData(googleSignInAccount.email);
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
 
-        if (userData == null) {
-          // No se encontró ningún usuario con el correo electrónico proporcionado.
-          showSnackbar(context, "Correo no registrado");
-          await FirebaseAuth.instance.signOut();
-          await GoogleSignIn().signOut();
-          isLoginGoogle = false;
-          notifyListeners();
-          return;
-        } else {
-          final AuthCredential credential = GoogleAuthProvider.credential(
-            accessToken: googleSignInAuthentication.accessToken,
-            idToken: googleSignInAuthentication.idToken,
-          );
-          final UserCredential userCredential =
-              await FirebaseAuth.instance.signInWithCredential(credential);
-          final User? user = userCredential.user;
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
 
-          if (user != null) {
-            // Obtener el token del dispositivo
-            //token = PushNotificationService.token;
-            String idUser = userData['id'].toString();
-            // Actualizar el token del usuario
-            await FirebaseFirestore.instance
-                .collection('users')
-                .doc(idUser)
-                .update({'token': token});
+      // Once signed in, return the UserCredential
+      var userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
-            showSnackbar(context, "Bienvenido ${userData['username']}");
+      var user = userCredential.user;
+      if (user == null) {
+        showSnackbar(context, "Correo no registrado");
+        await FirebaseAuth.instance.signOut();
+        await GoogleSignIn().signOut();
+        isLoginGoogle = false;
+        notifyListeners();
+        return;
+      }
+      dynamic userData = await getUserData(user.email!);
 
-            // Cambiar el estado de la autenticación
-            checkAuthStatus();
-            // Navegar a la página de inicio
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => InicioScreen(
-                    userData: userData,
-                  ),
-                ));
-            //fin de proceso
-            isLoginGoogle = false;
-            notifyListeners();
-          }
-        }
+      if (userData == null) {
+        // No se encontró ningún usuario con el correo electrónico proporcionado.
+        showSnackbar(context, "Correo no registrado");
+        await FirebaseAuth.instance.signOut();
+        await GoogleSignIn().signOut();
+        isLoginGoogle = false;
+        notifyListeners();
+        return;
+      }
+
+      if (user != null) {
+        // Obtener el token del dispositivo
+        //token = PushNotificationService.token;
+        String idUser = userData['id'].toString();
+        // Actualizar el token del usuario
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(idUser)
+            .update({'token': token});
+
+        showSnackbar(context, "Bienvenido ${userData['username']}");
+
+        // Cambiar el estado de la autenticación
+        checkAuthStatus();
+        // Navegar a la página de inicio
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => InicioScreen(
+                userData: userData,
+              ),
+            ));
+        //fin de proceso
+        isLoginGoogle = false;
+        notifyListeners();
       }
     } catch (e) {
       //print("Error al iniciar sesión con Google: $e");
@@ -155,6 +165,73 @@ class AuthProviderP extends ChangeNotifier {
       isLoginGoogle = false;
       notifyListeners();
     }
+
+    // try {
+    //   final GoogleSignInAccount? googleSignInAccount =
+    //       await GoogleSignIn().signIn();
+    //   if (googleSignInAccount != null) {
+    //     final GoogleSignInAuthentication googleSignInAuthentication =
+    //         await googleSignInAccount.authentication;
+
+    //     // Obtener los datos del usuario desde la base de datos
+    //     dynamic userData = await getUserData(googleSignInAccount.email);
+
+    //     if (userData == null) {
+    //       // No se encontró ningún usuario con el correo electrónico proporcionado.
+    //       showSnackbar(context, "Correo no registrado");
+    //       await FirebaseAuth.instance.signOut();
+    //       await GoogleSignIn().signOut();
+    //       isLoginGoogle = false;
+    //       notifyListeners();
+    //       return;
+    //     } else {
+    //       final AuthCredential credential = GoogleAuthProvider.credential(
+    //         accessToken: googleSignInAuthentication.accessToken,
+    //         idToken: googleSignInAuthentication.idToken,
+    //       );
+    //       final UserCredential userCredential =
+    //           await FirebaseAuth.instance.signInWithCredential(credential);
+    //       final User? user = userCredential.user;
+
+    //       if (user != null) {
+    //         // Obtener el token del dispositivo
+    //         //token = PushNotificationService.token;
+    //         String idUser = userData['id'].toString();
+    //         // Actualizar el token del usuario
+    //         await FirebaseFirestore.instance
+    //             .collection('users')
+    //             .doc(idUser)
+    //             .update({'token': token});
+
+    //         showSnackbar(context, "Bienvenido ${userData['username']}");
+
+    //         // Cambiar el estado de la autenticación
+    //         checkAuthStatus();
+    //         // Navegar a la página de inicio
+    //         Navigator.pushReplacement(
+    //             context,
+    //             MaterialPageRoute(
+    //               builder: (context) => InicioScreen(
+    //                 userData: userData,
+    //               ),
+    //             ));
+    //         //fin de proceso
+    //         isLoginGoogle = false;
+    //         notifyListeners();
+    //       }
+    //     }
+    //   }
+    // } catch (e) {
+    //   //print("Error al iniciar sesión con Google: $e");
+    //   showSnackbar(context, "Error al iniciar sesión con Google");
+    //   await FirebaseAuth.instance.signOut();
+    //   await GoogleSignIn().signOut();
+    //   isLoginGoogle = false;
+    //   notifyListeners();
+    // } finally {
+    //   isLoginGoogle = false;
+    //   notifyListeners();
+    // }
   }
 
   //REGISTRAR USUARIO

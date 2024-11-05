@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_price/firebase_options.dart';
 import 'package:e_price/src/screen.dart';
 import 'package:flutter/services.dart';
-import 'package:googleapis_auth/auth_io.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -75,160 +74,160 @@ class PushNotificationService {
 
   Future<void> sendNotificationToAllUsers(
       String title, String body, String? imageUrl) async {
-    const serviceAccountPath = 'assets/e-price-13564-5c0a4f0ec8a7.json';
-    final accountCredentials = ServiceAccountCredentials.fromJson(
-        json.decode(await rootBundle.loadString(serviceAccountPath)));
+    // const serviceAccountPath = 'assets/e-price-13564-5c0a4f0ec8a7.json';
+    // final accountCredentials = ServiceAccountCredentials.fromJson(
+    //     json.decode(await rootBundle.loadString(serviceAccountPath)));
 
-    final scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
+    // final scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
 
-    final client = await clientViaServiceAccount(accountCredentials, scopes);
+    // final client = await clientViaServiceAccount(accountCredentials, scopes);
 
-    const String fcmUrl =
-        'https://fcm.googleapis.com/v1/projects/e-price-13564/messages:send';
+    // const String fcmUrl =
+    //     'https://fcm.googleapis.com/v1/projects/e-price-13564/messages:send';
 
-    final mensaje = {
-      "message": {
-        "topic": "all",
-        "notification": {
-          "title": title,
-          "body": body,
-        },
-        "data": {
-          "title": title,
-          "body": body,
-          "click_action": "FLUTTER_NOTIFICATION_CLICK",
-        }
-      }
-    };
+    // final mensaje = {
+    //   "message": {
+    //     "topic": "all",
+    //     "notification": {
+    //       "title": title,
+    //       "body": body,
+    //     },
+    //     "data": {
+    //       "title": title,
+    //       "body": body,
+    //       "click_action": "FLUTTER_NOTIFICATION_CLICK",
+    //     }
+    //   }
+    // };
 
-    if (imageUrl != null) {
-      mensaje['message']?['data'] ??= {};
-      (mensaje['message']?['data'] as Map<String, dynamic>)['image'] = imageUrl;
-    }
+    // if (imageUrl != null) {
+    //   mensaje['message']?['data'] ??= {};
+    //   (mensaje['message']?['data'] as Map<String, dynamic>)['image'] = imageUrl;
+    // }
 
-    final response = await client.post(
-      Uri.parse(fcmUrl),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(mensaje),
-    );
+    // final response = await client.post(
+    //   Uri.parse(fcmUrl),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: jsonEncode(mensaje),
+    // );
 
-    if (response.statusCode == 200) {
-      //print("Notificación enviada exitosamente");
-    } else {
-      //print("Error al enviar la notificación: ${response.body}");
-    }
+    // if (response.statusCode == 200) {
+    //   //print("Notificación enviada exitosamente");
+    // } else {
+    //   //print("Error al enviar la notificación: ${response.body}");
+    // }
   }
 
   //notificar a un usuario especifico
   Future<void> sendNotificationToUser(
       String userToken, String title, String body, String? imageUrl) async {
-    const serviceAccountPath = 'assets/e-price-13564-5c0a4f0ec8a7.json';
-    final accountCredentials = ServiceAccountCredentials.fromJson(
-        json.decode(await rootBundle.loadString(serviceAccountPath)));
+    // const serviceAccountPath = 'assets/e-price-13564-5c0a4f0ec8a7.json';
+    // final accountCredentials = ServiceAccountCredentials.fromJson(
+    //     json.decode(await rootBundle.loadString(serviceAccountPath)));
 
-    final scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
+    // final scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
 
-    final client = await clientViaServiceAccount(accountCredentials, scopes);
+    // final client = await clientViaServiceAccount(accountCredentials, scopes);
 
-    const String fcmUrl =
-        'https://fcm.googleapis.com/v1/projects/e-price-13564/messages:send';
+    // const String fcmUrl =
+    //     'https://fcm.googleapis.com/v1/projects/e-price-13564/messages:send';
 
-    final mensaje = {
-      "message": {
-        "token": userToken,
-        "notification": {
-          "title": title,
-          "body": body,
-        },
-        "data": {
-          "title": title,
-          "body": body,
-          "click_action": "FLUTTER_NOTIFICATION_CLICK",
-        }
-      }
-    };
+    // final mensaje = {
+    //   "message": {
+    //     "token": userToken,
+    //     "notification": {
+    //       "title": title,
+    //       "body": body,
+    //     },
+    //     "data": {
+    //       "title": title,
+    //       "body": body,
+    //       "click_action": "FLUTTER_NOTIFICATION_CLICK",
+    //     }
+    //   }
+    // };
 
-    if (imageUrl != null) {
-      mensaje['message']?['data'] ??= {};
-      (mensaje['message']?['data'] as Map<String, dynamic>)['image'] = imageUrl;
-    }
+    // if (imageUrl != null) {
+    //   mensaje['message']?['data'] ??= {};
+    //   (mensaje['message']?['data'] as Map<String, dynamic>)['image'] = imageUrl;
+    // }
 
-    final response = await client.post(
-      Uri.parse(fcmUrl),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(mensaje),
-    );
+    // final response = await client.post(
+    //   Uri.parse(fcmUrl),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: jsonEncode(mensaje),
+    // );
 
-    if (response.statusCode == 200) {
-      //print("Notificación enviada exitosamente");
-    } else {
-      //print("Error al enviar la notificación: ${response.body}");
-    }
+    // if (response.statusCode == 200) {
+    //   //print("Notificación enviada exitosamente");
+    // } else {
+    //   //print("Error al enviar la notificación: ${response.body}");
+    // }
   }
 
   Future<void> sendNotificationToAdminUsers(
       String title, String body, String? imageUrl) async {
-    const serviceAccountPath = 'assets/e-price-13564-5c0a4f0ec8a7.json';
-    final accountCredentials = ServiceAccountCredentials.fromJson(
-        json.decode(await rootBundle.loadString(serviceAccountPath)));
+    // const serviceAccountPath = 'assets/e-price-13564-5c0a4f0ec8a7.json';
+    // final accountCredentials = ServiceAccountCredentials.fromJson(
+    //     json.decode(await rootBundle.loadString(serviceAccountPath)));
 
-    final scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
+    // final scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
 
-    final client = await clientViaServiceAccount(accountCredentials, scopes);
+    // final client = await clientViaServiceAccount(accountCredentials, scopes);
 
-    const String fcmUrl =
-        'https://fcm.googleapis.com/v1/projects/e-price-13564/messages:send';
+    // const String fcmUrl =
+    //     'https://fcm.googleapis.com/v1/projects/e-price-13564/messages:send';
 
-    final QuerySnapshot<Map<String, dynamic>> adminUsersSnapshot =
-        await FirebaseFirestore.instance
-            .collection('users')
-            .where('rol', isEqualTo: 'admin')
-            .get();
+    // final QuerySnapshot<Map<String, dynamic>> adminUsersSnapshot =
+    //     await FirebaseFirestore.instance
+    //         .collection('users')
+    //         .where('rol', isEqualTo: 'admin')
+    //         .get();
 
-    final List<String> adminTokens = [];
+    // final List<String> adminTokens = [];
 
-    for (var userDoc in adminUsersSnapshot.docs) {
-      final String token = userDoc.data()['token'] as String;
-      adminTokens.add(token);
-    }
+    // for (var userDoc in adminUsersSnapshot.docs) {
+    //   final String token = userDoc.data()['token'] as String;
+    //   adminTokens.add(token);
+    // }
 
-    final mensaje = {
-      "message": {
-        "tokens": adminTokens, // Aquí usamos los tokens de los administradores
-        "notification": {
-          "title": title,
-          "body": body,
-        },
-        "data": {
-          "title": title,
-          "body": body,
-          "click_action": "FLUTTER_NOTIFICATION_CLICK",
-        }
-      }
-    };
+    // final mensaje = {
+    //   "message": {
+    //     "tokens": adminTokens, // Aquí usamos los tokens de los administradores
+    //     "notification": {
+    //       "title": title,
+    //       "body": body,
+    //     },
+    //     "data": {
+    //       "title": title,
+    //       "body": body,
+    //       "click_action": "FLUTTER_NOTIFICATION_CLICK",
+    //     }
+    //   }
+    // };
 
-    if (imageUrl != null) {
-      mensaje['message']?['data'] ??= {};
-      (mensaje['message']?['data'] as Map<String, dynamic>)['image'] = imageUrl;
-    }
+    // if (imageUrl != null) {
+    //   mensaje['message']?['data'] ??= {};
+    //   (mensaje['message']?['data'] as Map<String, dynamic>)['image'] = imageUrl;
+    // }
 
-    final response = await client.post(
-      Uri.parse(fcmUrl),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(mensaje),
-    );
+    // final response = await client.post(
+    //   Uri.parse(fcmUrl),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: jsonEncode(mensaje),
+    // );
 
-    if (response.statusCode == 200) {
-      // print("Notificación enviada exitosamente a los administradores");
-    } else {
-      // print("Error al enviar la notificación: ${response.body}");
-    }
+    // if (response.statusCode == 200) {
+    //   // print("Notificación enviada exitosamente a los administradores");
+    // } else {
+    //   // print("Error al enviar la notificación: ${response.body}");
+    // }
   }
 
   static closeStream() {
