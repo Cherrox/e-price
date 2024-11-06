@@ -47,12 +47,42 @@ class _ProfilePageState extends State<ProfilePage> {
       showSnackbar(context, "Debe de seleccionar una opción");
     } else {
       if (_driveOption) {
+        var headers = await GoogleDriveHelper().loginToDrive();
+        if (headers == null) {
+          showSnackbar(context, "Error al conectar a Google Drive");
+        }
         excel.Excel _excel = excel.Excel.createExcel();
         excel.Sheet sheetObject = _excel['Sheet1'];
         await FirebaseFirestore.instance
             .collection('users/${widget.userData['id']}/productos')
             .get()
             .then((QuerySnapshot querySnapshot) {
+          sheetObject.appendRow([
+            excel.TextCellValue("ATRIBUTO DE LA PLANTILLA"),
+            excel.TextCellValue("CANTIDAD"),
+            excel.TextCellValue("CODIGO DE BARRAS"),
+            excel.TextCellValue("CODIGO DEL ARTICULO"),
+            excel.TextCellValue("ESPECIFICACIONES"),
+            excel.TextCellValue("LISTA DE PRECIO"),
+            excel.TextCellValue("NIVEL"),
+            excel.TextCellValue("NOMBRE DEL PRODUCTO"),
+            excel.TextCellValue("ORIGEN"),
+            excel.TextCellValue("PRECIO"),
+            excel.TextCellValue("PRECIO ENTERO"),
+            excel.TextCellValue("PRECIO PARA MIEMBROS"),
+            excel.TextCellValue("SKU"),
+            excel.TextCellValue("SUCURSAL"),
+            excel.TextCellValue("UNIDAD"),
+            excel.DateTimeCellValue(
+              day: DateTime.now().day,
+              month: DateTime.now().month,
+              year: DateTime.now().year,
+              hour: DateTime.now().hour,
+              minute: DateTime.now().minute,
+            ),
+            excel.TextCellValue("idDoc"),
+            excel.TextCellValue("imageProduct"),
+          ]);
           querySnapshot.docs.forEach((doc) {
             var date = (doc["createdAt"] as Timestamp).toDate();
             sheetObject.appendRow([
@@ -90,10 +120,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 "${directory.path}/stock${DateTime.now().toString()}.xlsx")
             .writeAsBytes(fileBytes!);
 
-        var result = await GoogleDriveHelper().uploadFileToGoogleDrive(file);
+        // var result = await GoogleDriveHelper().uploadFileToGoogleDrive(file);
+        var result = await GoogleDriveHelper()
+            .uploadToDrive(file, headers!, "Stock${DateTime.now()}.xlsx");
 
         if (result != null) {
           showSnackbar(context, "Error: $result");
+        } else {
+          showSnackbar(context, "Archivo subido correctamente");
         }
         setState(() {
           _isLoading = false;
