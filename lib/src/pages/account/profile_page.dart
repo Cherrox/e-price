@@ -13,6 +13,7 @@ import 'package:googleapis/drive/v3.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io' as io;
+import 'package:permission_handler/permission_handler.dart' as perm;
 //import 'package:share_plus/share_plus.dart';
 //import 'package:url_launcher/url_launcher.dart';
 
@@ -38,6 +39,75 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  Future<io.File> generateStockFile(String filePath) async {
+    excel.Excel _excel = excel.Excel.createExcel();
+    excel.Sheet sheetObject = _excel['Sheet1'];
+    await FirebaseFirestore.instance
+        .collection('users/${widget.userData['id']}/productos')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      sheetObject.appendRow([
+        excel.TextCellValue("ATRIBUTO DE LA PLANTILLA"),
+        excel.TextCellValue("CANTIDAD"),
+        excel.TextCellValue("CODIGO DE BARRAS"),
+        excel.TextCellValue("CODIGO DEL ARTICULO"),
+        excel.TextCellValue("ESPECIFICACIONES"),
+        excel.TextCellValue("LISTA DE PRECIO"),
+        excel.TextCellValue("NIVEL"),
+        excel.TextCellValue("NOMBRE DEL PRODUCTO"),
+        excel.TextCellValue("ORIGEN"),
+        excel.TextCellValue("PRECIO"),
+        excel.TextCellValue("PRECIO ENTERO"),
+        excel.TextCellValue("PRECIO PARA MIEMBROS"),
+        excel.TextCellValue("SKU"),
+        excel.TextCellValue("SUCURSAL"),
+        excel.TextCellValue("UNIDAD"),
+        excel.DateTimeCellValue(
+          day: DateTime.now().day,
+          month: DateTime.now().month,
+          year: DateTime.now().year,
+          hour: DateTime.now().hour,
+          minute: DateTime.now().minute,
+        ),
+        excel.TextCellValue("idDoc"),
+        excel.TextCellValue("imageProduct"),
+      ]);
+      querySnapshot.docs.forEach((doc) {
+        var date = (doc["createdAt"] as Timestamp).toDate();
+        sheetObject.appendRow([
+          excel.TextCellValue(doc["ATRIBUTO DE LA PLANTILLA"]),
+          excel.TextCellValue(doc["CANTIDAD"]),
+          excel.TextCellValue(doc["CODIGO DE BARRAS"]),
+          excel.TextCellValue(doc["CODIGO DEL ARTICULO"]),
+          excel.TextCellValue(doc["ESPECIFICACIONES"]),
+          excel.TextCellValue(doc["LISTA DE PRECIO"]),
+          excel.TextCellValue(doc["NIVEL"]),
+          excel.TextCellValue(doc["NOMBRE DEL PRODUCTO"]),
+          excel.TextCellValue(doc["ORIGEN"]),
+          excel.TextCellValue(doc["PRECIO"]),
+          excel.TextCellValue(doc["PRECIO ENTERO"]),
+          excel.TextCellValue(doc["PRECIO PARA MIEMBROS"]),
+          excel.TextCellValue(doc["SKU"]),
+          excel.TextCellValue(doc["SUCURSAL"]),
+          excel.TextCellValue(doc["UNIDAD"]),
+          excel.DateTimeCellValue(
+            day: date.day,
+            month: date.month,
+            year: date.year,
+            hour: date.hour,
+            minute: date.minute,
+          ),
+          excel.TextCellValue(doc["idDoc"]),
+          excel.TextCellValue(doc["imageProduct"]),
+        ]);
+      });
+    });
+
+    var fileBytes = _excel.save();
+    io.File file = await io.File(filePath).writeAsBytes(fileBytes!);
+    return file;
+  }
+
   Future<void> downloadFile() async {
     Navigator.of(context).pop();
     setState(() {
@@ -47,79 +117,14 @@ class _ProfilePageState extends State<ProfilePage> {
       showSnackbar(context, "Debe de seleccionar una opción");
     } else {
       if (_driveOption) {
+        var directory = await getApplicationDocumentsDirectory();
+        io.File file = await generateStockFile(
+            "${directory.path}/stock${DateTime.now().toString()}.xlsx");
         var headers = await GoogleDriveHelper().loginToDrive();
+
         if (headers == null) {
           showSnackbar(context, "Error al conectar a Google Drive");
         }
-        excel.Excel _excel = excel.Excel.createExcel();
-        excel.Sheet sheetObject = _excel['Sheet1'];
-        await FirebaseFirestore.instance
-            .collection('users/${widget.userData['id']}/productos')
-            .get()
-            .then((QuerySnapshot querySnapshot) {
-          sheetObject.appendRow([
-            excel.TextCellValue("ATRIBUTO DE LA PLANTILLA"),
-            excel.TextCellValue("CANTIDAD"),
-            excel.TextCellValue("CODIGO DE BARRAS"),
-            excel.TextCellValue("CODIGO DEL ARTICULO"),
-            excel.TextCellValue("ESPECIFICACIONES"),
-            excel.TextCellValue("LISTA DE PRECIO"),
-            excel.TextCellValue("NIVEL"),
-            excel.TextCellValue("NOMBRE DEL PRODUCTO"),
-            excel.TextCellValue("ORIGEN"),
-            excel.TextCellValue("PRECIO"),
-            excel.TextCellValue("PRECIO ENTERO"),
-            excel.TextCellValue("PRECIO PARA MIEMBROS"),
-            excel.TextCellValue("SKU"),
-            excel.TextCellValue("SUCURSAL"),
-            excel.TextCellValue("UNIDAD"),
-            excel.DateTimeCellValue(
-              day: DateTime.now().day,
-              month: DateTime.now().month,
-              year: DateTime.now().year,
-              hour: DateTime.now().hour,
-              minute: DateTime.now().minute,
-            ),
-            excel.TextCellValue("idDoc"),
-            excel.TextCellValue("imageProduct"),
-          ]);
-          querySnapshot.docs.forEach((doc) {
-            var date = (doc["createdAt"] as Timestamp).toDate();
-            sheetObject.appendRow([
-              excel.TextCellValue(doc["ATRIBUTO DE LA PLANTILLA"]),
-              excel.TextCellValue(doc["CANTIDAD"]),
-              excel.TextCellValue(doc["CODIGO DE BARRAS"]),
-              excel.TextCellValue(doc["CODIGO DEL ARTICULO"]),
-              excel.TextCellValue(doc["ESPECIFICACIONES"]),
-              excel.TextCellValue(doc["LISTA DE PRECIO"]),
-              excel.TextCellValue(doc["NIVEL"]),
-              excel.TextCellValue(doc["NOMBRE DEL PRODUCTO"]),
-              excel.TextCellValue(doc["ORIGEN"]),
-              excel.TextCellValue(doc["PRECIO"]),
-              excel.TextCellValue(doc["PRECIO ENTERO"]),
-              excel.TextCellValue(doc["PRECIO PARA MIEMBROS"]),
-              excel.TextCellValue(doc["SKU"]),
-              excel.TextCellValue(doc["SUCURSAL"]),
-              excel.TextCellValue(doc["UNIDAD"]),
-              excel.DateTimeCellValue(
-                day: date.day,
-                month: date.month,
-                year: date.year,
-                hour: date.hour,
-                minute: date.minute,
-              ),
-              excel.TextCellValue(doc["idDoc"]),
-              excel.TextCellValue(doc["imageProduct"]),
-            ]);
-          });
-        });
-
-        var fileBytes = _excel.save();
-        var directory = await getApplicationDocumentsDirectory();
-        var file = await io.File(
-                "${directory.path}/stock${DateTime.now().toString()}.xlsx")
-            .writeAsBytes(fileBytes!);
-
         // var result = await GoogleDriveHelper().uploadFileToGoogleDrive(file);
         var result = await GoogleDriveHelper()
             .uploadToDrive(file, headers!, "Stock${DateTime.now()}.xlsx");
@@ -132,6 +137,40 @@ class _ProfilePageState extends State<ProfilePage> {
         setState(() {
           _isLoading = false;
         });
+      } else {
+        try {
+          var result = await perm.Permission.manageExternalStorage.request();
+          var result2 = await perm.Permission.storage.request();
+          if (result.isGranted && result2.isGranted) {
+            final directory = await getDownloadsDirectory();
+            final folderPath = '${directory!.path}';
+
+            // Crear la carpeta específica si no existe
+            final folder = io.Directory(folderPath);
+            if (!await folder.exists()) {
+              await folder.create(recursive: true);
+            }
+
+            final filePath = '$folderPath/Stock${DateTime.now()}.xlsx';
+            // final localFile = io.File(filePath);
+
+            io.File localFile = await generateStockFile(filePath);
+            final List<int> dataBytes = localFile.readAsBytesSync();
+
+            await localFile.writeAsBytes(dataBytes);
+            showSnackbar(context, "Archivo guardado en $filePath");
+          } else {
+            showSnackbar(
+                context, "Debe de permitir el acceso a la galeria de archivos");
+          }
+        } catch (e) {
+          print("Error: $e");
+          showSnackbar(context, "Error: $e");
+          setState(() {
+            _isLoading = false;
+          });
+          return;
+        }
       }
     }
     setState(() {
