@@ -8,6 +8,7 @@ class MyFormats {
   final _dateTimeFormat = DateFormat('yyyy/MM/dd - hh:mm:ss a');
   final _dateWithoutTimeFormat = DateFormat('yyyy/MM/dd');
   final _dateUepaPay = DateFormat('yyyy-MM-dd hh:mm');
+  final _dateTimeFormatWithoutDoubleDots = DateFormat('yyyyMMddhhmmss');
 
   String currencyFormat(double value) {
     return _currency.format(value);
@@ -31,6 +32,10 @@ class MyFormats {
 
   String dateWithoutTimeFormat(DateTime date) {
     return _dateWithoutTimeFormat.format(date);
+  }
+
+  String dateTimeFormatWithoutDoubleDots(DateTime date) {
+    return _dateTimeFormatWithoutDoubleDots.format(date);
   }
 
   String uepaPayDate(DateTime date) {

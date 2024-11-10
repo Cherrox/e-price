@@ -41,7 +41,6 @@ dependencies:
   hardware_buttons_find_flutter: ^0.0.4
   barcode_widget: ^2.0.4
   googleapis: ^13.2.0
-  flutter_secure_storage: ^5.0.2
   url_launcher: ^6.0.0-nullsafety
   envied: ^0.5.4+1
   permission_handler: ^11.3.1

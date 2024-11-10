@@ -2,6 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_price/src/helpers/formats.dart';
 import 'package:e_price/src/helpers/google_drive_helper.dart';
 import 'package:e_price/src/pages/account/edit_profile.dart';
 import 'package:e_price/src/screen.dart';
@@ -141,23 +142,26 @@ class _ProfilePageState extends State<ProfilePage> {
         try {
           var result = await perm.Permission.manageExternalStorage.request();
           var result2 = await perm.Permission.storage.request();
-          if (result.isGranted && result2.isGranted) {
-            final directory = await getDownloadsDirectory();
+          var result3 = await perm.Permission.mediaLibrary.request();
+          if (result.isGranted && result2.isGranted && result3.isGranted) {
+            // final directory = await getDownloadsDirectory();
+            final directory = io.Directory('/storage/emulated/0/Download');
             final folderPath = '${directory!.path}';
 
             // Crear la carpeta específica si no existe
             final folder = io.Directory(folderPath);
-            if (!await folder.exists()) {
-              await folder.create(recursive: true);
+            if (!await directory.exists()) {
+              await directory.create(recursive: true);
             }
 
-            final filePath = '$folderPath/Stock${DateTime.now()}.xlsx';
+            final filePath =
+                '$folderPath/EPriceStock${MyFormats().dateTimeFormatWithoutDoubleDots(DateTime.now())}.xlsx';
             // final localFile = io.File(filePath);
 
             io.File localFile = await generateStockFile(filePath);
-            final List<int> dataBytes = localFile.readAsBytesSync();
+            // final List<int> dataBytes = localFile;
 
-            await localFile.writeAsBytes(dataBytes);
+            // await localFile.writeAsBytes(dataBytes);
             showSnackbar(context, "Archivo guardado en $filePath");
           } else {
             showSnackbar(
