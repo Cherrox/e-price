@@ -18,7 +18,7 @@ class PrinterService {
         date,
         others,
       ); // 开启黑标
-      return null;
+      return result;
     } catch (e) {
       print("FALLO LA IMPRESORA: '${e}'.");
       return e.toString();
