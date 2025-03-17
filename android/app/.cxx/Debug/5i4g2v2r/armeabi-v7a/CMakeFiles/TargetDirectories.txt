@@ -1,0 +1,2 @@
+/Users/jorgelopez/Desktop/Jorge/Zenith/Apps/e-price/android/app/.cxx/Debug/5i4g2v2r/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/jorgelopez/Desktop/Jorge/Zenith/Apps/e-price/android/app/.cxx/Debug/5i4g2v2r/armeabi-v7a/CMakeFiles/rebuild_cache.dir
