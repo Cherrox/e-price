@@ -51,6 +51,7 @@ class _AddProductPageState extends State<AddProductPage> {
       for (var table in excel.tables.keys) {
         for (var row in excel.tables[table]!.rows.skip(1)) {
           String productCode = row[0]?.value?.toString() ?? "";
+          // print("productCode: ${productCode}");
 
           // Crear un mapa para cada producto
           Map<String, dynamic> productData = {
@@ -70,25 +71,28 @@ class _AddProductPageState extends State<AddProductPage> {
             'NIVEL': row[10]?.value?.toString() ?? "",
             'ORIGEN': row[11]?.value?.toString() ?? '',
             'ESPECIFICACIONES': row[12]?.value?.toString() ?? '',
+            "imageProduct": "",
           };
 
           // Verificar si el producto ya existe
-          QuerySnapshot query = await refCollection
-              .where('CODIGO DEL ARTICULO', isEqualTo: productCode)
-              .get();
-          print("Query: ${query.docs}");
-          if (query.docs.isNotEmpty) {
-            // Producto existe, verificar propiedad
-            DocumentSnapshot doc = query.docs.first;
-            String docId = doc.id;
-            productData['imageProduct'] = doc['imageProduct'] ?? '';
-            await refCollection.doc(docId).update(productData);
-          } else {
-            // Producto no existe, agregar uno nuevo
-            productData['idDoc'] = refCollection.doc().id;
-            productData['imageProduct'] = '';
-            await refCollection.doc(productData['idDoc']).set(productData);
-          }
+          // QuerySnapshot query = await refCollection
+          //     .where('CODIGO DEL ARTICULO', isEqualTo: productCode)
+          //     .get();
+          // print("Query: ${query.docs}");
+          // if (query.docs.isNotEmpty) {
+          //   // Producto existe, verificar propiedad
+          //   DocumentSnapshot doc = query.docs.first;
+          //   String docId = doc.id;
+          //   productData['imageProduct'] = doc['imageProduct'] ?? '';
+          //   await refCollection.doc(docId).update(productData);
+          // } else {
+          //   // Producto no existe, agregar uno nuevo
+          //   productData['idDoc'] = refCollection.doc().id;
+          //   productData['imageProduct'] = '';
+          //   await refCollection.doc(productData['idDoc']).set(productData);
+          // }
+
+          await refCollection.doc(productCode).set(productData);
 
           // Actualizar progreso
           processedRows++;
