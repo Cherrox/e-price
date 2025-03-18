@@ -125,23 +125,26 @@ class _AddOneProductPageState extends State<AddOneProductPage> {
       };
 
       // Verificar si el producto ya existe
-      QuerySnapshot query = await refCollection2
-          .where('CODIGO DEL ARTICULO', isEqualTo: productCode)
-          .get();
-      print("Query: ${query.docs}");
-      if (query.docs.isNotEmpty) {
-        DocumentSnapshot doc = query.docs.first;
-        String docId = doc.id;
-        productData['imageProduct'] = doc['imageProduct'] ?? '';
-        await refCollection2.doc(docId).update(productData);
-        showSnackbar(context, 'Producto actualizado correctamente');
-      } else {
-        // Producto no existe, agregar uno nuevo
-        productData['idDoc'] = refCollection2.doc().id;
-        productData['imageProduct'] = '';
-        await refCollection2.doc(productData['idDoc']).set(productData);
-        showSnackbar(context, 'Producto agregado correctamente');
-      }
+      // QuerySnapshot query = await refCollection2
+      //     .where('CODIGO DEL ARTICULO', isEqualTo: productCode)
+      //     .get();
+      // print("Query: ${query.docs}");
+      // if (query.docs.isNotEmpty) {
+      //   DocumentSnapshot doc = query.docs.first;
+      //   String docId = doc.id;
+      //   productData['imageProduct'] = doc['imageProduct'] ?? '';
+      //   await refCollection2.doc(docId).update(productData);
+      //   showSnackbar(context, 'Producto actualizado correctamente');
+      // } else {
+      //   // Producto no existe, agregar uno nuevo
+      //   productData['idDoc'] = refCollection2.doc().id;
+      //   productData['imageProduct'] = '';
+      //   await refCollection2.doc(productData['idDoc']).set(productData);
+      //   showSnackbar(context, 'Producto agregado correctamente');
+      // }
+
+      await refCollection2.doc(productCode).set(productData);
+      showSnackbar(context, 'Producto agregado correctamente');
 
       Navigator.pop(context, true);
       setState(() {
